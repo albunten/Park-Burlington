@@ -2,7 +2,7 @@
 const express = require('express'); // this is a safer way rather than import because import is newer and not as widely adopted 
 const path = require('path'); 
 const app = express();
-const port = process.env.PORT || 5000; 
+const port = process.env.PORT || 5500; 
 require('dotenv').config()
 
 app.use(express.static(path.join(__dirname, "/Public"))); // sets up a static directory from which our files are served and prevents people seeing sensitive code 
