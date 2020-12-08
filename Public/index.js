@@ -37,9 +37,9 @@ async function makeQuery() {
 
          for (let i = 0; i < keys.length; i++) {
             let k = keys[i]
-            let name = info[k].name
-            let coords = info[k].coordinates
-            let descrip = info[k].description
+            // let name = info[k].name
+            // let coords = info[k].coordinates
+            // let descrip = info[k].description
          }
          return dataSnapshot.val()
       })
@@ -159,8 +159,16 @@ async function initMap() {
    let myInfo = await makeQuery()
    let activeWindow = null
    console.log(myInfo)
+   myInfo.forEach((item) => {
+      console.log(item.category)
+   })
+
+
+
+
 
    myInfo.forEach((item) => {
+      
       let path = item.coordinates.split(',0,')
       let stroke = item.stroke
       let strokeOpacity = item.strokeopacity
@@ -170,12 +178,8 @@ async function initMap() {
       let name = item.name
       let latitude = item.latitude
       let longitude = item.longitude
-      
-      //let center = item.center
-      let center = { Lat: Number(item.center__lat), Lng: Number(item.center__lng) }
-         
-         
-      
+      let category = item.category
+      let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) }
       let rate = item.rate
       let description = item.description
       let ownership = item.ownership
@@ -188,15 +192,17 @@ async function initMap() {
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
 
-      console.log('center = ', center)
-      console.log('newPath = ', newPath)
+      
+
+      // console.log('center = ', center)
+      // console.log('newPath = ', newPath)
 
       //Adds charging station icons
       let markerLayer = new google.maps.Marker({
          position: null,
          icon: image,
       });
-      if (latitude !== undefined) {
+      if (category === 'EVC') {
          markerLayer.setPosition({ lat: latitude, lng: longitude })
       }
 
@@ -206,7 +212,7 @@ async function initMap() {
          strokeWeight: 2,
          strokeOpacity: strokeOpacity
       })
-      if (polyline === 'yes') {
+      if (category !== 'GAR' || category !== 'LOT' || category !== 'EVC') {
          polyLineLayer.setPath(newPath)
       }
 
@@ -218,7 +224,7 @@ async function initMap() {
          fillColor: fill,
          fillOpacity: fillOpacity,
       });
-      if (polyline === undefined && latitude === undefined) {
+      if (category === 'GAR' || category === 'LOT') {
          polygonLayer.setPath(newPath)
       }
 
