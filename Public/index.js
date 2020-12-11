@@ -140,7 +140,7 @@ async function initMap() {
             elementType: "labels.icon",
             stylers: [
                {
-                  visibility: "on"
+                  visibility: "off"
                }
             ]
          }
@@ -349,6 +349,7 @@ async function initMap() {
       // ***** Toggle display of map overlay components **********************************************************
       // toggle small icons on or off
       function showSmallIcons(theLayer) {
+         console.log('showSmallIcons ', theLayer)
          if (theLayer.checked === false) {
             priceIcon.setMap()
          } else if (theLayer.checked === true) {
@@ -358,6 +359,7 @@ async function initMap() {
 
       // function to toggle specific types of parking asset on or off
       function toggleLayer(theLayer) {
+         console.log('toggleLayer ', theLayer)
          if (theLayer.checked === false) {
             polygonLayer.setVisible(false)
          } else if (theLayer.checked === true) {
@@ -366,6 +368,7 @@ async function initMap() {
       }
 
       function togglePolyLineLayer(theLayer) {
+         console.log('togglePolyLineLayer ', theLayer)
          if (theLayer.checked === false) {
             polyLineLayer.setVisible(false)
          } else if (theLayer.checked === true) {
@@ -377,7 +380,7 @@ async function initMap() {
       function toggleHandicap() {
          if (category === 'HAN') {
             let theLayer = toggleHandicapLayer
-            toggleLayer(theLayer)
+                       togglePolyLineLayer(theLayer)
             if (map.zoom > 17) {
                showSmallIcons(theLayer)
             }
@@ -385,9 +388,10 @@ async function initMap() {
          }
       }
       function toggleMunicipalGarages() {
-         if (ownership === 'municipal') {
+         if (ownership === 'Municipal' && (category === 'GAR' || category === 'LOT')) {
             let theLayer = toggleMunicipalGaragesLayer
             toggleLayer(theLayer)
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 15) {
                showSmallIcons(theLayer)
             }
@@ -395,9 +399,10 @@ async function initMap() {
          }
       }
       function togglePrivateGarages() {
-         if (ownership === 'private') {
+         if (ownership === 'Private' && (category === 'GAR' || category === 'LOT')) {
             let theLayer = togglePrivateGaragesLayer
             toggleLayer(theLayer)
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 17) {
                showSmallIcons(theLayer)
             }
@@ -405,9 +410,10 @@ async function initMap() {
          }
       }
       function toggleSmartMeters() {
-         if (name === 'Smart Meters') {
+         if (category === 'SMT') {
             let theLayer = toggleSmartMetersLayer
-            toggleLayer(theLayer)
+            
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 18) {
                showSmallIcons(theLayer)
             }
@@ -415,9 +421,9 @@ async function initMap() {
          }
       }
       function toggleBlueTopMeters() {
-         if (name === 'Blue Top Meters') {
+         if (category === 'BLU') {
             let theLayer = toggleBlueTopMetersLayer
-            toggleLayer(theLayer)
+            
             togglePolyLineLayer(theLayer)
             if (map.zoom > 18) {
                showSmallIcons(theLayer)
@@ -426,9 +432,10 @@ async function initMap() {
          }
       }
       function toggleBrownTopMeters() {
-         if (name === 'Brown Top Meters') {
+         if (category === 'BRN') {
             let theLayer = toggleBrownTopMetersLayer
-            toggleLayer(theLayer)
+            
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 18) {
                showSmallIcons(theLayer)
             }
@@ -436,9 +443,10 @@ async function initMap() {
          }
       }
       function toggleYellowTopMeters() {
-         if (name === 'Yellow Top Meters') {
+         if (category === 'YEL') {
             let theLayer = toggleYellowTopMetersLayer
-            toggleLayer(theLayer)
+            
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 19) {
                showSmallIcons(theLayer)
             }
@@ -455,15 +463,16 @@ async function initMap() {
          }
          if (category === 'EVC') {
             let theLayer = toggleEVChargeLayer
-            toggleLayer(theLayer)
+            togglePolyLineLayer(theLayer)
             // small icons not shown on this type
          }
       }
 
       function toggleMotorcycle() {
-         if (name === 'Motorcycle Parking') {
+         if (category === 'MOT') {
             let theLayer = toggleMotorcycleLayer
-            toggleLayer(theLayer)
+           
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 19) {
                showSmallIcons(theLayer)
             }
@@ -471,9 +480,10 @@ async function initMap() {
          }
       }
       function toggleBusLargeVehicle() {
-         if (name === 'Bus Parking') {
+         if (category === 'LRG') {
             let theLayer = toggleBusLargeVehicleLayer
-            toggleLayer(theLayer)
+           
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 19) {
                showSmallIcons(theLayer)
             }
@@ -481,9 +491,10 @@ async function initMap() {
          }
       }
       function toggleResidential() {
-         if (name === 'Residential Parking') {
+         if (category === 'RES') {
             let theLayer = toggleResidentialLayer
-            toggleLayer(theLayer)
+            
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 17) {
                showSmallIcons(theLayer)
             }
@@ -491,9 +502,10 @@ async function initMap() {
          }
       }
       function toggleLoadingUnloading() {
-         if (name === 'Loading/Unloading Only') {
+         if (category === 'LUZ') {
             let theLayer = toggleLoadingUnloadingLayer
-            toggleLayer(theLayer)
+            
+            togglePolyLineLayer(theLayer)
             if (map.zoom > 19) {
                showSmallIcons(theLayer)
             }
