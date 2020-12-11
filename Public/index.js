@@ -184,7 +184,6 @@ async function initMap() {
       let description = item.description
       let ownership = item.ownership
       let geometry = item.geometry
-      let polyline = item.polyline
       let parkMarker = './images/arrowtransparent.png'
       let image = './images/electric_vehicle.png'
       let newPath = path.map((item) => {
@@ -216,7 +215,7 @@ async function initMap() {
          polyLineLayer.setPath(newPath)
       }
 
-      // adds garages and lots - polygons and linestrings - parking meters
+      // adds garages and lots 
       let polygonLayer = new google.maps.Polygon({
          paths: null,
          strokeColor: stroke,
@@ -244,6 +243,7 @@ async function initMap() {
          icon: null,
          optimized: false,
       });
+      
       priceIcon.addListener('click', function (event) {
          if (activeWindow != null) {
             activeWindow.close()
@@ -375,7 +375,7 @@ async function initMap() {
 
       //Toggle specific types of parking asset plus small icons 
       function toggleHandicap() {
-         if (name === 'Handicapped' || name === 'Handicapped Parking') {
+         if (category === 'HAN') {
             let theLayer = toggleHandicapLayer
             toggleLayer(theLayer)
             if (map.zoom > 17) {
@@ -446,14 +446,14 @@ async function initMap() {
          }
       }
       function toggleEVCharge() {  // note complexity is due to charge stations having multiple names plus most are geometry: Point while 2 are linestrings
-         if (geometry === 'Point' || name === 'Charging Station North EV' || name === 'Charging Station') {
+         if (category === 'EVC') {
             if (toggleEVChargeLayer.checked === false) {
                markerLayer.setMap()
             } else if (toggleEVChargeLayer.checked === true) {
                markerLayer.setMap(map)
             }
          }
-         if (name === 'Charging Station North EV' || name === 'Charging Station') {
+         if (category === 'EVC') {
             let theLayer = toggleEVChargeLayer
             toggleLayer(theLayer)
             // small icons not shown on this type
@@ -541,6 +541,7 @@ async function initMap() {
 
       // make small icons visible or not depending on zoom level
       map.addListener('zoom_changed', function () {
+         console.log('toggle on zoom fired')
          toggleHandicap()
          toggleMunicipalGarages()
          togglePrivateGarages()
@@ -559,6 +560,7 @@ async function initMap() {
 
    //turn off residential and loading/unloading to start
    function startCondition() {
+      console.log('start condition fired')
       if ((document.getElementById('toggleHandicap').checked) === true) {
          document.getElementById('toggleHandicap').click();
       }
@@ -601,6 +603,7 @@ async function initMap() {
 
    // turn all parking assets on - visible regardless of prior visibility
    function showAll() {
+      console.log('show All fired')
       if ((document.getElementById('toggleHandicap').checked) === false) {
          document.getElementById('toggleHandicap').click();
       }
