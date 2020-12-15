@@ -185,7 +185,7 @@ async function initMap() {
       let ownership = item.ownership
       let geometry = item.geometry
       let parkMarker = './images/arrowtransparent.png'
-      let image = './images/electric_vehicle.png'
+      let image = './images/electricIcon.png'
       let newPath = path.map((item) => {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
@@ -368,7 +368,7 @@ async function initMap() {
       }
 
       function togglePolyLineLayer(theLayer) {
-         console.log('togglePolyLineLayer ', theLayer)
+         // console.log('togglePolyLineLayer ', theLayer)
          if (theLayer.checked === false) {
             polyLineLayer.setVisible(false)
          } else if (theLayer.checked === true) {
