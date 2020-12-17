@@ -81,6 +81,7 @@ async function initMap() {
       zoom: 15.3,
       gestureHandling: "greedy",
       fullscreenControl: false,
+      streetViewControl: true,
       rotateControl: false,
       scaleControl: true,
       mapTypeControl: false,
@@ -261,14 +262,14 @@ async function initMap() {
       });
 
       if (rate != "") {
-         let dynamicFontSize = (24 - (rate.length * 1.2)).toString() + 'px'
+         let dynamicFontSize = (18 - (rate.length * 1.2)).toString() + 'px'
          priceIcon.setLabel({ text: rate, fontSize: dynamicFontSize, color: "white", fontWeight: "bold" })
       }
 
       if (icon != "") {
          priceIcon.setIcon({ url: icon, anchor: { x: 15, y: 15 } })
       } else {
-         priceIcon.setIcon({ url: "images/text-background.png", anchor: { x: 30, y: 15 } })
+         priceIcon.setIcon({ url: "images/text-background5020.png", anchor: { x: 30, y: 15 } })
       }
 
       if (center !== 'NEED') {
@@ -330,6 +331,21 @@ async function initMap() {
 
       // set variables for layer controls
 
+      let z1 = 17
+      let z2 = 18
+      let z3 = 19
+      let hanZoom = z1
+      let munZoom = z1
+      let priZoom = z1
+      let smtZoom = z2
+      let bluZoom = z2
+      let brnZoom = z2
+      let yelZoom = z2
+      let motZoom = z2
+      let lrgZoom = z2
+      let resZoom = z2
+      let luzZoom = 25
+
       let toggleShowAll = document.getElementById('toggleShowAll')
 
 
@@ -359,7 +375,7 @@ async function initMap() {
 
       // function to toggle specific types of parking asset on or off
       function toggleLayer(theLayer) {
-         console.log('toggleLayer ', theLayer)
+         // console.log('toggleLayer ', theLayer)
          if (theLayer.checked === false) {
             polygonLayer.setVisible(false)
          } else if (theLayer.checked === true) {
@@ -381,10 +397,10 @@ async function initMap() {
          if (category === 'HAN') {
             let theLayer = toggleHandicapLayer
                        togglePolyLineLayer(theLayer)
-            if (map.zoom > 17) {
+            if (map.zoom >= hanZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 17) { priceIcon.setMap() }
+            if (map.zoom < hanZoom) { priceIcon.setMap() }
          }
       }
       function toggleMunicipalGarages() {
@@ -392,10 +408,10 @@ async function initMap() {
             let theLayer = toggleMunicipalGaragesLayer
             toggleLayer(theLayer)
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 15) {
+            if (map.zoom >= munZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 15) { priceIcon.setMap() }
+            if (map.zoom < munZoom) { priceIcon.setMap() }
          }
       }
       function togglePrivateGarages() {
@@ -403,10 +419,10 @@ async function initMap() {
             let theLayer = togglePrivateGaragesLayer
             toggleLayer(theLayer)
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 17) {
+            if (map.zoom >= priZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 17) { priceIcon.setMap() }
+            if (map.zoom < priZoom) { priceIcon.setMap() }
          }
       }
       function toggleSmartMeters() {
@@ -414,10 +430,10 @@ async function initMap() {
             let theLayer = toggleSmartMetersLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 18) {
+            if (map.zoom >= smtZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 18) { priceIcon.setMap() }
+            if (map.zoom < smtZoom) { priceIcon.setMap() }
          }
       }
       function toggleBlueTopMeters() {
@@ -425,10 +441,10 @@ async function initMap() {
             let theLayer = toggleBlueTopMetersLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 18) {
+            if (map.zoom >= bluZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 18) { priceIcon.setMap() }
+            if (map.zoom < bluZoom) { priceIcon.setMap() }
          }
       }
       function toggleBrownTopMeters() {
@@ -436,10 +452,10 @@ async function initMap() {
             let theLayer = toggleBrownTopMetersLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 18) {
+            if (map.zoom >= brnZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 18) { priceIcon.setMap() }
+            if (map.zoom < brnZoom) { priceIcon.setMap() }
          }
       }
       function toggleYellowTopMeters() {
@@ -447,10 +463,10 @@ async function initMap() {
             let theLayer = toggleYellowTopMetersLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 19) {
+            if (map.zoom >= yelZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 19) { priceIcon.setMap() }
+            if (map.zoom < yelZoom) { priceIcon.setMap() }
          }
       }
       function toggleEVCharge() {  // note complexity is due to charge stations having multiple names plus most are geometry: Point while 2 are linestrings
@@ -473,10 +489,10 @@ async function initMap() {
             let theLayer = toggleMotorcycleLayer
            
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 19) {
+            if (map.zoom >= motZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 19) { priceIcon.setMap() }
+            if (map.zoom < motZoom) { priceIcon.setMap() }
          }
       }
       function toggleBusLargeVehicle() {
@@ -484,10 +500,10 @@ async function initMap() {
             let theLayer = toggleBusLargeVehicleLayer
            
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 19) {
+            if (map.zoom >= lrgZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 19) { priceIcon.setMap() }
+            if (map.zoom < lrgZoom) { priceIcon.setMap() }
          }
       }
       function toggleResidential() {
@@ -495,10 +511,10 @@ async function initMap() {
             let theLayer = toggleResidentialLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 17) {
+            if (map.zoom >= resZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 17) { priceIcon.setMap() }
+            if (map.zoom < resZoom) { priceIcon.setMap() }
          }
       }
       function toggleLoadingUnloading() {
@@ -506,10 +522,10 @@ async function initMap() {
             let theLayer = toggleLoadingUnloadingLayer
             
             togglePolyLineLayer(theLayer)
-            if (map.zoom > 19) {
+            if (map.zoom >= luzZoom) {
                showSmallIcons(theLayer)
             }
-            if (map.zoom <= 19) { priceIcon.setMap() }
+            if (map.zoom < luzZoom) { priceIcon.setMap() }
          }
       }
 
@@ -553,7 +569,8 @@ async function initMap() {
 
       // make small icons visible or not depending on zoom level
       map.addListener('zoom_changed', function () {
-         console.log('toggle on zoom fired')
+         let zoom = map.getZoom()
+         console.log('toggle on zoom fired -', zoom)
          toggleHandicap()
          toggleMunicipalGarages()
          togglePrivateGarages()
