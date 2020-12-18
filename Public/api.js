@@ -1,6 +1,6 @@
 let script = document.createElement('script')
 
-fetch('./apikey')
+fetch('process.env.API_KEY')
   .then((response) => {
     return response.text()
   }).then((apiKey) => {
