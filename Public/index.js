@@ -12,7 +12,7 @@ window.addEventListener('resize', () => {
 });
 
 //***********Firebase Configuration ****************************************************************
-const config = {
+const config = { 
    apiKey: 'process.env.FIREBASE_KEY',
    authDomain: "park-burlington-bba.firebaseapp.com",
    databaseURL: "https://park-burlington-bba.firebaseio.com",
