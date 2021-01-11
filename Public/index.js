@@ -12,7 +12,7 @@ window.addEventListener('resize', () => {
 });
 
 //***********Firebase Configuration ****************************************************************
-const config = { 
+const config = {
    apiKey: 'process.env.FIREBASE_KEY',
    authDomain: "park-burlington-bba.firebaseapp.com",
    databaseURL: "https://park-burlington-bba.firebaseio.com",
@@ -37,9 +37,6 @@ async function makeQuery() {
 
          for (let i = 0; i < keys.length; i++) {
             let k = keys[i]
-            // let name = info[k].name
-            // let coords = info[k].coordinates
-            // let descrip = info[k].description
          }
          return dataSnapshot.val()
       })
@@ -169,7 +166,7 @@ async function initMap() {
 
 
    myInfo.forEach((item) => {
-      
+
       let path = item.coordinates.split(',0,')
       let stroke = item.stroke
       let strokeOpacity = item.strokeopacity
@@ -177,6 +174,7 @@ async function initMap() {
       let fillOpacity = item.fillOpacity
       let icon = item.icon
       let name = item.name
+      let navigationurl = item.navigationurl
       let latitude = item.latitude
       let longitude = item.longitude
       let category = item.category
@@ -192,7 +190,7 @@ async function initMap() {
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
 
-      
+
 
       // console.log('center = ', center)
       // console.log('newPath = ', newPath)
@@ -244,13 +242,22 @@ async function initMap() {
          icon: null,
          optimized: false,
       });
-      
+
       priceIcon.addListener('click', function (event) {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' + '<br><br>' + description;
-         infowindow.setContent(html)
+
+
+         let html = '<strong>' + name + '</strong>' +
+            '<br>' +
+            '<a href=' + navigationurl + '>Get Directions</a>' +
+            '<br><br>' +
+            description;
+
+
+
+            infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
          infowindow.setOptions({
@@ -280,7 +287,11 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' + '<br><br>' + description;
+         let html = '<strong>' + name + '</strong>' +
+            '<br>' +
+            '<a href=' + navigationurl + '>Get Directions</a>' +
+            '<br><br>' +
+            description;
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
@@ -297,7 +308,11 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' + '<br><br>' + description;
+         let html = '<strong>' + name + '</strong>' +
+            '<br>' +
+            '<a href=' + navigationurl + '>Get Directions</a>' +
+            '<br><br>' +
+            description;
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
@@ -314,7 +329,11 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' + '<br><br>' + description;
+         let html = '<strong>' + name + '</strong>' +
+            '<br>' +
+            '<a href=' + navigationurl + '>Get Directions</a>' +
+            '<br><br>' +
+            description;
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
@@ -396,7 +415,7 @@ async function initMap() {
       function toggleHandicap() {
          if (category === 'HAN') {
             let theLayer = toggleHandicapLayer
-                       togglePolyLineLayer(theLayer)
+            togglePolyLineLayer(theLayer)
             if (map.zoom >= hanZoom) {
                showSmallIcons(theLayer)
             }
@@ -428,7 +447,7 @@ async function initMap() {
       function toggleSmartMeters() {
          if (category === 'SMT') {
             let theLayer = toggleSmartMetersLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= smtZoom) {
                showSmallIcons(theLayer)
@@ -439,7 +458,7 @@ async function initMap() {
       function toggleBlueTopMeters() {
          if (category === 'BLU') {
             let theLayer = toggleBlueTopMetersLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= bluZoom) {
                showSmallIcons(theLayer)
@@ -450,7 +469,7 @@ async function initMap() {
       function toggleBrownTopMeters() {
          if (category === 'BRN') {
             let theLayer = toggleBrownTopMetersLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= brnZoom) {
                showSmallIcons(theLayer)
@@ -461,7 +480,7 @@ async function initMap() {
       function toggleYellowTopMeters() {
          if (category === 'YEL') {
             let theLayer = toggleYellowTopMetersLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= yelZoom) {
                showSmallIcons(theLayer)
@@ -487,7 +506,7 @@ async function initMap() {
       function toggleMotorcycle() {
          if (category === 'MOT') {
             let theLayer = toggleMotorcycleLayer
-           
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= motZoom) {
                showSmallIcons(theLayer)
@@ -498,7 +517,7 @@ async function initMap() {
       function toggleBusLargeVehicle() {
          if (category === 'LRG') {
             let theLayer = toggleBusLargeVehicleLayer
-           
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= lrgZoom) {
                showSmallIcons(theLayer)
@@ -509,7 +528,7 @@ async function initMap() {
       function toggleResidential() {
          if (category === 'RES') {
             let theLayer = toggleResidentialLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= resZoom) {
                showSmallIcons(theLayer)
@@ -520,7 +539,7 @@ async function initMap() {
       function toggleLoadingUnloading() {
          if (category === 'LUZ') {
             let theLayer = toggleLoadingUnloadingLayer
-            
+
             togglePolyLineLayer(theLayer)
             if (map.zoom >= luzZoom) {
                showSmallIcons(theLayer)
@@ -785,11 +804,11 @@ async function initMap() {
       infowindowContent.children['place-name'].textContent = place.name;
       // set infowindow on map and close after 6 seconds
       // addressinfowindow.open(map, marker);
-      setTimeout(function () { addressinfowindow.close(); }, 4500)
+      setTimeout(function () { addressinfowindow.close(); }, 7000)
 
       if (circleCount <= 1) {
          addressinfowindow.open(map, marker);
-         setTimeout(function () { addressinfowindow.close(); }, 4500)
+         setTimeout(function () { addressinfowindow.close(); }, 7000)
          circleCount += 1;
       }
       // add walk circle function

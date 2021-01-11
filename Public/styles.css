@@ -80,10 +80,6 @@ html, body {
    font-weight: lighter;
  }
  
- #walk-emoji {
-   display: inline;
-   font-size: 1.3rem;
- }
  
  /* Searchbar */
  
@@ -99,13 +95,13 @@ html, body {
    background-color: #fff;
    position: absolute;
    transition-property: all;
-    transition-duration: .6s;
+    transition-duration: .2s;
    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-   animation: fadeIn ease 4s;
-   -webkit-animation: fadeIn ease 4s;
-   -moz-animation: fadeIn ease 4s;
-   -o-animation: fadeIn ease 4s;
-   -ms-animation: fadeIn ease 4s;
+   animation: fadeIn ease 1s;
+   -webkit-animation: fadeIn ease 1s;
+   -moz-animation: fadeIn ease 1s;
+   -o-animation: fadeIn ease 1s;
+   -ms-animation: fadeIn ease 1s;
    width: 60vw;
    min-width: 75px;
    max-width: 500px;
@@ -123,11 +119,11 @@ html, body {
    width: 90%;
    outline: none;
    
-   animation: fadeIn ease 2s;
-   -webkit-animation: fadeIn ease 2s;
-   -moz-animation: fadeIn ease 2s;
-   -o-animation: fadeIn ease 2s;
-   -ms-animation: fadeIn ease 2s;
+   animation: fadeIn ease 1s;
+   -webkit-animation: fadeIn ease 1s;
+   -moz-animation: fadeIn ease 1s;
+   -o-animation: fadeIn ease 1s;
+   -ms-animation: fadeIn ease 1s;
  }
  
  /* ******************************************************** */
