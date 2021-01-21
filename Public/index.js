@@ -201,7 +201,7 @@ async function initMap() {
          icon: image,
       });
       if (category === 'EVC') {
-         markerLayer.setPosition({ lat: latitude, lng: longitude })
+         markerLayer.setPosition(center)
       }
 
       //add any polyline meter rows
