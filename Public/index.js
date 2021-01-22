@@ -184,7 +184,7 @@ async function initMap() {
       let ownership = item.ownership
       let geometry = item.geometry
       let parkMarker = './images/arrowtransparent.png'
-      let image = './images/electricIcon.png'
+      let image = './images/ev20.png'
       let newPath = path.map((item) => {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
@@ -353,6 +353,7 @@ async function initMap() {
       let z1 = 17
       let z2 = 18
       let z3 = 19
+      let evcZoom = z1
       let hanZoom = z1
       let munZoom = z1
       let priZoom = z1
@@ -360,7 +361,7 @@ async function initMap() {
       let bluZoom = z2
       let brnZoom = z2
       let yelZoom = z2
-      let motZoom = z2
+      let motZoom = z1
       let lrgZoom = z2
       let resZoom = z2
       let luzZoom = 25
@@ -502,6 +503,19 @@ async function initMap() {
             // small icons not shown on this type
          }
       }
+
+      // function toggleEVCharge() {
+      //    if (category === 'EVC') {
+      //       let theLayer = toggleEVChargeLayer
+
+      //       togglePolyLineLayer(theLayer)
+      //       if (map.zoom >= evcZoom) {
+      //          showSmallIcons(theLayer)
+      //       }
+      //       if (map.zoom < evcZoom) { priceIcon.setMap() }
+      //    }
+      // }
+
 
       function toggleMotorcycle() {
          if (category === 'MOT') {
