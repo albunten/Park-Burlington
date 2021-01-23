@@ -234,6 +234,7 @@ async function initMap() {
       // create info-window for use when clicking parking asset
       let infowindow = new google.maps.InfoWindow({
          content: ""
+         
       });
 
       // create small icons for show price on zoom in
@@ -249,7 +250,8 @@ async function initMap() {
          }
 
 
-         let html = '<strong>' + name + '</strong>' +
+         let html = 
+         '<strong>' + name + '</strong>' +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
@@ -257,7 +259,7 @@ async function initMap() {
 
 
 
-            infowindow.setContent(html)
+         infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
          infowindow.setOptions({
@@ -276,7 +278,7 @@ async function initMap() {
       if (icon != "") {
          priceIcon.setIcon({ url: icon, anchor: { x: 15, y: 15 } })
       } else {
-         priceIcon.setIcon({ url: "images/text-background5020.png", anchor: { x: 30, y: 15 } })
+         priceIcon.setIcon({ url: "images/text-background4020.png", anchor: { x: 30, y: 15 } })
       }
 
       if (center !== 'NEED') {
@@ -790,7 +792,8 @@ async function initMap() {
       strokeWeight: 3,
       fillOpacity: 0.0,
       center: map.center,
-      radius: 95  //the average person can walk in a minute: 40-50 metres at a slow pace
+      radius: 95,  //the average person can walk in a minute: 40-50 metres at a slow pace
+      zIndex: -100
    })
 
    autocomplete.addListener('place_changed', function () {

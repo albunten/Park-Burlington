@@ -214,8 +214,8 @@ html, body {
  
  .modal-content {
    position: fixed;
-   height: 35%;
-   width: calc(100vw - 4px);
+   height: 50%;
+   width: calc(100vw - 10px);
    max-width: 500px;
    background-color: #fefefe;
    bottom: calc(var(--vh, 1vh) * 12);
@@ -318,9 +318,9 @@ html, body {
    margin: auto;
    padding: 0;
    border: 1px solid #888;
-   width: 75%;
-   max-width: 500px;
-   min-width: 160px;
+   max-width: 95%;
+   /* max-width: 500px;
+   min-width: 160px; */
    max-height: 70%;
    overflow-y: auto;
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -623,9 +623,9 @@ html, body {
    background-color: #ffaa00;
  }
  
- #motorcycle-icon {
+ /* #motorcycle-icon {
    background-color: #828282;
- }
+ } */
  
  #loading-icon {
    background-color: #ac2c1b;
