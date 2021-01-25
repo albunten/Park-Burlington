@@ -178,6 +178,7 @@ async function initMap() {
       let latitude = item.latitude
       let longitude = item.longitude
       let category = item.category
+      let id = item.id
       let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) }
       let rate = item.rate
       let description = item.description
@@ -251,11 +252,13 @@ async function initMap() {
 
 
          let html = 
-         '<strong>' + name + '</strong>' +
+         '<strong>' + name + '</strong>'  +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
-            description;
+            description +
+            '<br /><br /> ('
+            + category + id + ')';
 
 
 
@@ -289,11 +292,13 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' +
+         let html = '<strong>' + name + '</strong>'  +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
-            description;
+            description +
+            '<br /><br /> ('
+            + category + id + ')';
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
@@ -310,11 +315,13 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>' +
+         let html = '<strong>' + name + '</strong>'  +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
-            description;
+            description +
+            '<br /><br /> ('
+            + category + id + ')';
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);
@@ -335,7 +342,9 @@ async function initMap() {
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
-            description;
+            description +
+            '<br /><br /> ('
+            + category + id + ')';
          infowindow.setContent(html)
 
          infowindow.setPosition(event.latLng);

@@ -223,6 +223,7 @@ html, body {
    /* 55% from the top and centered */
    border: 4px solid #20346a;
    border-bottom: none;
+   text-align: center;
    font-weight: bold;
    color: rgb(54, 54, 54);
    border-radius: 7px 7px 0 0;
@@ -234,6 +235,12 @@ html, body {
    animation-name: animatebottom;
    animation-duration: .2s;
    z-index: 1;
+ }
+
+ .disclaimer-body p {
+margin: .4rem;
+text-align: center;
+font-size: medium;
  }
  
  .menu {
