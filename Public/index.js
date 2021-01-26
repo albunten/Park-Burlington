@@ -190,12 +190,7 @@ async function initMap() {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
-
-
-
-      // console.log('center = ', center)
-      // console.log('newPath = ', newPath)
-
+   
       //Adds charging station icons
       let markerLayer = new google.maps.Marker({
          position: null,
@@ -208,7 +203,7 @@ async function initMap() {
       //add any polyline meter rows
       let polyLineLayer = new google.maps.Polyline({
          strokeColor: stroke,
-         strokeWeight: 2,
+         strokeWeight: 3.5,
          strokeOpacity: strokeOpacity
       })
       if (category !== 'GAR' || category !== 'LOT' || category !== 'EVC') {
@@ -235,7 +230,7 @@ async function initMap() {
       // create info-window for use when clicking parking asset
       let infowindow = new google.maps.InfoWindow({
          content: ""
-         
+
       });
 
       // create small icons for show price on zoom in
@@ -251,8 +246,8 @@ async function initMap() {
          }
 
 
-         let html = 
-         '<strong>' + name + '</strong>'  +
+         let html =
+            '<strong>' + name + '</strong>' +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
@@ -292,7 +287,7 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>'  +
+         let html = '<strong>' + name + '</strong>' +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
@@ -315,7 +310,7 @@ async function initMap() {
          if (activeWindow != null) {
             activeWindow.close()
          }
-         let html = '<strong>' + name + '</strong>'  +
+         let html = '<strong>' + name + '</strong>' +
             '<br>' +
             '<a href=' + navigationurl + '>Get Directions</a>' +
             '<br><br>' +
@@ -515,6 +510,8 @@ async function initMap() {
          }
       }
 
+      //  CHANGE TO DB STORAGE OF ICONS WITH THIS ACTIVE
+      // NEEDS TESTING
       // function toggleEVCharge() {
       //    if (category === 'EVC') {
       //       let theLayer = toggleEVChargeLayer
@@ -716,6 +713,52 @@ async function initMap() {
       }
    };
 
+   // turn all park assets off despite current state
+   function hideAll() {
+      console.log('show All fired')
+      if ((document.getElementById('toggleHandicap').checked) === true) {
+         document.getElementById('toggleHandicap').click();
+      }
+      if ((document.getElementById('toggleMunicipalGarages').checked) === true) {
+         document.getElementById('toggleMunicipalGarages').click();
+         console.log('it is true')
+      }
+      if ((document.getElementById('togglePrivateGarages').checked) === true) {
+         document.getElementById('togglePrivateGarages').click();
+      }
+      if ((document.getElementById('toggleSmartMeters').checked) === true) {
+         document.getElementById('toggleSmartMeters').click();
+      }
+      if ((document.getElementById('toggleBlueTopMeters').checked) === true) {
+         document.getElementById('toggleBlueTopMeters').click();
+      }
+      if ((document.getElementById('toggleBrownTopMeters').checked) === true) {
+         document.getElementById('toggleBrownTopMeters').click();
+      }
+      if ((document.getElementById('toggleYellowTopMeters').checked) === true) {
+         document.getElementById('toggleYellowTopMeters').click();
+      }
+      if ((document.getElementById('toggleEVCharge').checked) === true) {
+         document.getElementById('toggleEVCharge').click();
+      }
+      if ((document.getElementById('toggleMotorcycle').checked) === true) {
+         document.getElementById('toggleMotorcycle').click();
+      }
+      if ((document.getElementById('toggleBusLargeVehicle').checked) === true) {
+         document.getElementById('toggleBusLargeVehicle').click();
+      }
+      if ((document.getElementById('toggleResidential').checked) === true) {
+         document.getElementById('toggleResidential').click();
+      }
+      if ((document.getElementById('toggleLoadingUnloading').checked) === true) {
+         document.getElementById('toggleLoadingUnloading').click();
+      }
+   };
+
+
+
+
+
    // turn on only off street parking (reset map to startup condition)
    let onOff = 'off'
    toggleShowAll.addEventListener('click', function () {
@@ -776,6 +819,95 @@ async function initMap() {
          toggleOnZoom()
       }
    }
+
+   //********************** toggle markers in street view*********************** */
+
+   // create variables to store existing .clicked status of icons
+   let varHan = ''
+   let varMun = ''
+   let varPri = ''
+   let varSma = ''
+   let varBlu = ''
+   let varBro = ''
+   let varYel = ''
+   let varEvc = ''
+   let varMot = ''
+   let varBus = ''
+   let varRes = ''
+   let varLoa = ''
+
+   // create variable for listener 
+   let groundLevel = map.getStreetView()
+
+   // listener toggles when street view is toggled visible/hidden
+   google.maps.event.addListener(groundLevel, 'visible_changed', function () {
+      // store existing state of .clicked for element icons and priceicons
+      function storeState() {
+         varHan = document.getElementById('toggleHandicap').checked
+         varMun = document.getElementById('toggleMunicipalGarages').checked
+         varPri = document.getElementById('togglePrivateGarages').checked
+         varSma = document.getElementById('toggleSmartMeters').checked
+         varBlu = document.getElementById('toggleBlueTopMeters').checked
+         varBro = document.getElementById('toggleBrownTopMeters').checked
+         varYel = document.getElementById('toggleYellowTopMeters').checked
+         varEvc = document.getElementById('toggleEVCharge').checked
+         varMot = document.getElementById('toggleMotorcycle').checked
+         varBus = document.getElementById('toggleBusLargeVehicle').checked
+         varRes = document.getElementById('toggleResidential').checked
+         varLoa = document.getElementById('toggleLoadingUnloading').checked
+      }
+
+      // check stored state and if 'true' then click it back on
+      function setPriorState() {
+
+         if (varHan === true) {
+            document.getElementById('toggleHandicap').click();
+         }
+         if (varMun === true) {
+            document.getElementById('toggleMunicipalGarages').click();
+         }
+         if (varPri === true) {
+            document.getElementById('togglePrivateGarages').click();
+         }
+         if (varSma === true) {
+            document.getElementById('toggleSmartMeters').click();
+         }
+         if (varBlu === true) {
+            document.getElementById('toggleBlueTopMeters').click();
+         }
+         if (varBro === true) {
+            document.getElementById('toggleBrownTopMeters').click();
+         }
+         if (varYel === true) {
+            document.getElementById('toggleYellowTopMeters').click();
+         }
+         if (varEvc === true) {
+            document.getElementById('toggleEVCharge').click();
+         }
+         if (varMot === true) {
+            document.getElementById('toggleMotorcycle').click();
+         }
+         if (varBus === true) {
+            document.getElementById('toggleBusLargeVehicle').click();
+         }
+         if (varRes === true) {
+            document.getElementById('toggleResidential').click();
+         }
+         if (varLoa === true) {
+            document.getElementById('toggleLoadingUnloading').click();
+         }
+      }
+
+      // if street view is toggled on - store the existing element visibility and turn them all off
+      if (groundLevel.getVisible()) {
+         storeState()
+         hideAll()
+         // when street view is toggled off - set all icons to prior visibility
+      } else {
+         setPriorState()
+      }
+   })
+
 
 
    // *********** search box ************************************************************
