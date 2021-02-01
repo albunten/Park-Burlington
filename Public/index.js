@@ -149,17 +149,18 @@ async function initMap() {
    //Get searchbar element and fix it to top left of screen
    let card = document.getElementById('searchbar-container');
    let input = document.getElementById('searchbar-input');
-   let reset = document.getElementById('btnReset')
+  
    map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
 
 
    // call database query and bring into initmap function ***************************************************************************
    let myInfo = await makeQuery()
+
    let activeWindow = null
-   console.log(myInfo)
-   myInfo.forEach((item) => {
-      console.log(item.category)
-   })
+   // console.log(myInfo)
+   // myInfo.forEach((item) => {
+   //    console.log(item.category)
+   // })
 
 
 
@@ -175,22 +176,22 @@ async function initMap() {
       let icon = item.icon
       let name = item.name
       let navigationurl = item.navigationurl
-      let latitude = item.latitude
-      let longitude = item.longitude
+      // let latitude = item.latitude
+      // let longitude = item.longitude
       let category = item.category
       let id = item.id
       let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) }
       let rate = item.rate
       let description = item.description
       let ownership = item.ownership
-      let geometry = item.geometry
-      let parkMarker = './images/arrowtransparent.png'
+      // let geometry = item.geometry
+      // let parkMarker = './images/arrowtransparent.png'
       let image = './images/ev20.png'
       let newPath = path.map((item) => {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
-   
+
       //Adds charging station icons
       let markerLayer = new google.maps.Marker({
          position: null,
@@ -276,7 +277,7 @@ async function initMap() {
       if (icon != "") {
          priceIcon.setIcon({ url: icon, anchor: { x: 15, y: 15 } })
       } else {
-         priceIcon.setIcon({ url: "images/text-background4020.png", anchor: { x: 30, y: 15 } })
+         priceIcon.setIcon({ url: "images/text-background5020.png", anchor: { x: 30, y: 15 } })
       }
 
       if (center !== 'NEED') {
@@ -630,7 +631,7 @@ async function initMap() {
 
    //turn off residential and loading/unloading to start
    function startCondition() {
-      console.log('start condition fired')
+      // console.log('start condition fired')
       if ((document.getElementById('toggleHandicap').checked) === true) {
          document.getElementById('toggleHandicap').click();
       }

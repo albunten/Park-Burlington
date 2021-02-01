@@ -332,9 +332,9 @@ font-size: medium;
    overflow-y: auto;
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    -webkit-animation-name: animatetop;
-   -webkit-animation-duration: 0.4s;
+   -webkit-animation-duration: 0.2s;
    animation-name: animatetop;
-   animation-duration: 0.4s;
+   animation-duration: 0.2s;
    border-radius: 5px;
    
  }
@@ -372,7 +372,7 @@ font-size: medium;
    z-index: 2;
    border-radius: 8px;
    border: solid 1px gray;
-   transition: .2s;
+   transition: .1s;
    color: rgb(44, 44, 44);
  }
  
@@ -381,7 +381,7 @@ font-size: medium;
    color: rgb(20, 20, 20);
    text-decoration: none;
    cursor: pointer;
-   transition: .2s;
+   transition: .1s;
  }
  
  .disclaimer-header {
