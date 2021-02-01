@@ -946,16 +946,16 @@ async function initMap() {
       if (place.geometry.viewport) {
 
          map.fitBounds(place.geometry.viewport);
-         map.setZoom(17.0);  //about 1 block
+         map.setZoom(17.5);  //about 1 block
          toggleZoomFeaturesOn()
          addWalkCircle()
          console.log(circleCount)
       } else {
          map.setCenter(place.geometry.location);
-         map.setZoom(17);  // Why 17? Because it looks good.
+         map.setZoom(17.5);  // Why 17? Because it looks good.
       }
       //set marker on map from search bar
-      map.setZoom(17.0);  //about 1 block
+      map.setZoom(17.5);  //about 1 block
       marker.setPosition(place.geometry.location);
       marker.setVisible(true);
       // add place name to infowindow
