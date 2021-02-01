@@ -566,7 +566,7 @@ font-size: medium;
  }
  
  #legend-content {
-   background-color: rgba(255, 255, 255, 0.822);
+   background-color: rgba(255, 255, 255, 1);
    padding-top: 35px;
    margin: 0;
    border-radius: 5px;

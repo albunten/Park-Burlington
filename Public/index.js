@@ -815,7 +815,7 @@ async function initMap() {
    };
 
    function toggleZoomFeaturesOn() {
-      if (map.zoom >= 17.1) {
+      if (map.zoom >= 17) {
          toggleOnZoom()
       }
    }
@@ -946,7 +946,7 @@ async function initMap() {
       if (place.geometry.viewport) {
 
          map.fitBounds(place.geometry.viewport);
-         map.setZoom(18.0);  //about 1 block
+         map.setZoom(17.0);  //about 1 block
          toggleZoomFeaturesOn()
          addWalkCircle()
          console.log(circleCount)
@@ -955,7 +955,7 @@ async function initMap() {
          map.setZoom(17);  // Why 17? Because it looks good.
       }
       //set marker on map from search bar
-      map.setZoom(18.0);  //about 1 block
+      map.setZoom(17.0);  //about 1 block
       marker.setPosition(place.geometry.location);
       marker.setVisible(true);
       // add place name to infowindow
