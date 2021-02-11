@@ -40,7 +40,9 @@ async function makeQuery() {
          }
          return dataSnapshot.val()
       })
+
    return myVar
+
 }
 
 
@@ -149,7 +151,7 @@ async function initMap() {
    //Get searchbar element and fix it to top left of screen
    let card = document.getElementById('searchbar-container');
    let input = document.getElementById('searchbar-input');
-  
+
    map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
 
 
@@ -207,13 +209,13 @@ async function initMap() {
          strokeWeight: 3.5,
          strokeOpacity: strokeOpacity
       })
-      if (category !== 'GAR' || category !== 'LOT' || category !== 'EVC') {
+      if (category !== 'GAR' || category !== 'LOT') {
          polyLineLayer.setPath(newPath)
       }
 
       // adds garages and lots 
       let polygonLayer = new google.maps.Polygon({
-         paths: null,
+         paths: [],
          strokeColor: stroke,
          strokeWeight: 2,
          fillColor: fill,
