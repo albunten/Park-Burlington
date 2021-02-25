@@ -52,6 +52,7 @@ function errData(data) {
    console.log('Error!')
    console.log(err)
 }
+
 let circleCount = 1;
 //-----------------------create base map------------------------
 
