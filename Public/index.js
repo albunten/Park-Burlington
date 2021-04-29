@@ -13,14 +13,13 @@ window.addEventListener('resize', () => {
 
 //***********Firebase Configuration ****************************************************************
 const config = {
-   apiKey: 'process.env.FIREBASE_KEY',
-   authDomain: "park-burlington-bba.firebaseapp.com",
-   databaseURL: "https://park-burlington-bba.firebaseio.com",
-   projectId: "park-burlington-bba",
-   storageBucket: "park-burlington-bba.appspot.com",
-   messagingSenderId: "456540755649",
-   appId: "1:456540755649:web:0682866d64059a80faa640",
-   measurementId: "G-NCTNJ3ZMS8"
+      apiKey: "AIzaSyBD584NZj_YWneTOAgahXR0A_CgKpJtR2c",
+    authDomain: "parkburlingtondev.firebaseapp.com",
+  databaseURL: "https://parkburlingtondev-default-rtdb.firebaseio.com/",
+  projectId: "parkburlingtondev",
+  storageBucket: "parkburlingtondev.appspot.com",
+  messagingSenderId: "876903591987",
+  appId: "1:876903591987:web:e2f212a6db49f81263f346"
 };
 
 firebase.initializeApp(config)
