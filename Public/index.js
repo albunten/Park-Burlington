@@ -159,7 +159,7 @@ async function initMap() {
    let myInfo = await makeQuery()
 
    let activeWindow = null
-   // console.log(myInfo)
+   console.log(myInfo)
    // myInfo.forEach((item) => {
    //    console.log(item.category)
    // })
@@ -188,21 +188,51 @@ async function initMap() {
       let ownership = item.ownership
       // let geometry = item.geometry
       // let parkMarker = './images/arrowtransparent.png'
-      let image = './images/ev20.png'
+     let image = './images/ev20.png'
+     let single = './images/singleMeter.png'
+     let double = './images/doubleMeter.png'
+     let kiosk = './images/kiosk.png'
       let newPath = path.map((item) => {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
 
       //Adds charging station icons
-      let markerLayer = new google.maps.Marker({
+      let evcLayer = new google.maps.Marker({
          position: null,
          icon: image,
       });
       if (category === 'EVC') {
-         markerLayer.setPosition(center)
+         evcLayer.setPosition(center)
       }
 
+     //Adds single meter icons
+     let singleLayer = new google.maps.Marker({
+       position: null,
+       icon: single,
+     });
+     if (category === 'SGL') {
+       singleLayer.setPosition(center)
+     }
+     
+     //Adds double meter icons
+     let doubleLayer = new google.maps.Marker({
+       position: null,
+       icon: double,
+     });
+     if (category === 'DBL') {
+       doubleLayer.setPosition(center)
+     }
+     
+     //Adds Kiosk icons
+     let kioskLayer = new google.maps.Marker({
+       position: null,
+       icon: kiosk,
+     });
+     if (category === 'KIO') {
+       kioskLayer.setPosition(center)
+     }
+     
       //add any polyline meter rows
       let polyLineLayer = new google.maps.Polyline({
          strokeColor: stroke,
@@ -227,8 +257,11 @@ async function initMap() {
 
       //set all layers on the map
       polygonLayer.setMap(map);
-      markerLayer.setMap(map);
-      polyLineLayer.setMap(map);
+      evcLayer.setMap(map);
+     polyLineLayer.setMap(map);
+     singleLayer.setMap(map);
+     doubleLayer.setMap(map);
+     kioskLayer.setMap(map);
 
       // create info-window for use when clicking parking asset
       let infowindow = new google.maps.InfoWindow({
@@ -309,7 +342,7 @@ async function initMap() {
       });
 
       // make charge stations 'clickable' and popup and populate infowindow
-      markerLayer.addListener('click', function (event) {
+      evcLayer.addListener('click', function (event) {
          if (activeWindow != null) {
             activeWindow.close()
          }
@@ -330,6 +363,75 @@ async function initMap() {
          { passive: true }
          activeWindow = infowindow;
       });
+     
+     // make single meters 'clickable' and popup and populate infowindow
+     singleLayer.addListener('click', function (event) {
+       if (activeWindow != null) {
+         activeWindow.close()
+       }
+       let html = '<strong>' + name + '</strong>' +
+         '<br>' +
+         '<a href=' + navigationurl + '>Get Directions</a>' +
+         '<br><br>' +
+         description +
+         '<br /><br /> ('
+         + category + id + ')';
+       infowindow.setContent(html)
+
+       infowindow.setPosition(event.latLng);
+       infowindow.setOptions({
+         pixelOffset: new google.maps.Size(0, 0)
+       }); // move the infowindow up slightly to the top of the marker icon
+       infowindow.open(map);
+       { passive: true }
+       activeWindow = infowindow;
+     });
+
+     // make Double meters 'clickable' and popup and populate infowindow
+     doubleLayer.addListener('click', function (event) {
+       if (activeWindow != null) {
+         activeWindow.close()
+       }
+       let html = '<strong>' + name + '</strong>' +
+         '<br>' +
+         '<a href=' + navigationurl + '>Get Directions</a>' +
+         '<br><br>' +
+         description +
+         '<br /><br /> ('
+         + category + id + ')';
+       infowindow.setContent(html)
+
+       infowindow.setPosition(event.latLng);
+       infowindow.setOptions({
+         pixelOffset: new google.maps.Size(0, 0)
+       }); // move the infowindow up slightly to the top of the marker icon
+       infowindow.open(map);
+       { passive: true }
+       activeWindow = infowindow;
+     });
+
+     // make Kiosks 'clickable' and popup and populate infowindow
+     kioskLayer.addListener('click', function (event) {
+       if (activeWindow != null) {
+         activeWindow.close()
+       }
+       let html = '<strong>' + name + '</strong>' +
+         '<br>' +
+         '<a href=' + navigationurl + '>Get Directions</a>' +
+         '<br><br>' +
+         description +
+         '<br /><br /> ('
+         + category + id + ')';
+       infowindow.setContent(html)
+
+       infowindow.setPosition(event.latLng);
+       infowindow.setOptions({
+         pixelOffset: new google.maps.Size(0, 0)
+       }); // move the infowindow up slightly to the top of the marker icon
+       infowindow.open(map);
+       { passive: true }
+       activeWindow = infowindow;
+     });
 
       // make polylines 'clickable' and popup and populate infowindow
       polyLineLayer.addListener('click', function (event) {
@@ -501,9 +603,9 @@ async function initMap() {
       function toggleEVCharge() {  // note complexity is due to charge stations having multiple names plus most are geometry: Point while 2 are linestrings
          if (category === 'EVC') {
             if (toggleEVChargeLayer.checked === false) {
-               markerLayer.setMap()
+               evcLayer.setMap()
             } else if (toggleEVChargeLayer.checked === true) {
-               markerLayer.setMap(map)
+               evcLayer.setMap(map)
             }
          }
          if (category === 'EVC') {
