@@ -159,7 +159,7 @@ async function initMap() {
    let myInfo = await makeQuery()
 
    let activeWindow = null
-   console.log(myInfo)
+   console.log({myInfo})
    // myInfo.forEach((item) => {
    //    console.log(item.category)
    // })
@@ -178,8 +178,8 @@ async function initMap() {
       let icon = item.icon
       let name = item.name
       let navigationurl = item.navigationurl
-      // let latitude = item.latitude
-      // let longitude = item.longitude
+      let zone1 = item.zone1
+      let zone2 = item.zone2
       let category = item.category
       let id = item.id
       let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) }
@@ -196,6 +196,8 @@ async function initMap() {
          let coordPair = item.split(',')
          return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
       })
+     
+     
 
       //Adds charging station icons
       let evcLayer = new google.maps.Marker({
@@ -220,7 +222,7 @@ async function initMap() {
        position: null,
        icon: double,
      });
-     if (category === 'DBL') {
+     if (category === 'DBL' && zone1 === 5803) {
        doubleLayer.setPosition(center)
      }
      
