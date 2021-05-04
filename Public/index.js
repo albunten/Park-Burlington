@@ -195,7 +195,15 @@ async function initMap() {
     let smartSingle = "./images/smartSingle.png"
     let yellowSingle = "./images/yellowSingle.png"
 
-    let double = './images/doubleMeter.png'
+    let blueLeft = './images/blueLeft.png'
+    let brownLeft = "./images/brownLeft.png"
+    let smartLeft = "./images/smartLeft.png"
+    let yellowLeft = "./images/yellowLeft.png"
+
+    let blueRight = './images/blueRight.png'
+    let brownRight = "./images/brownRight.png"
+    let smartRight = "./images/smartRight.png"
+    let yellowRight = "./images/yellowRight.png"
 
     let kiosk = './images/kiosk.png'
     let newPath = path.map((item) => {
@@ -220,6 +228,40 @@ async function initMap() {
       "5816": brownSingle
     }
 
+    const doubleIconLeft = {
+      "5801": blueLeft,
+      "5802": brownLeft,
+      "5803": smartLeft,
+      "5804": yellowLeft,
+      "5806": brownLeft,
+      "5807": blueLeft,
+      "5808": blueLeft,
+      "5809": brownLeft,
+      "5810": blueLeft,
+      "5811": smartLeft,
+      "5812": brownLeft,
+      "5813": yellowLeft,
+      "5815": blueLeft,
+      "5816": brownLeft
+    }
+
+    const doubleIconRight = {
+      "5801": blueRight,
+      "5802": brownRight,
+      "5803": smartRight,
+      "5804": yellowRight,
+      "5806": brownRight,
+      "5807": blueRight,
+      "5808": blueRight,
+      "5809": brownRight,
+      "5810": blueRight,
+      "5811": smartRight,
+      "5812": brownRight,
+      "5813": yellowRight,
+      "5815": blueRight,
+      "5816": brownRight
+    }
+
     //Adds charging station icons
     let evcLayer = new google.maps.Marker({
       position: null,
@@ -241,12 +283,20 @@ async function initMap() {
     }
 
     //Adds double meter icons
-    let doubleLayer = new google.maps.Marker({
+    let doubleLayerLeft = new google.maps.Marker({
       position: null,
-      icon: double,
+      icon: doubleIconLeft[zone1],
     });
-    if (category === 'DBL' && zone1 === 5803) {
-      doubleLayer.setPosition(center)
+    if (category === 'DBL') {
+      doubleLayerLeft.setPosition(center)
+    }
+
+    let doubleLayerRight = new google.maps.Marker({
+      position: null,
+      icon: doubleIconRight[zone2],
+    });
+    if (category === 'DBL') {
+      doubleLayerRight.setPosition(center)
     }
 
     //Adds Kiosk icons
@@ -285,7 +335,8 @@ async function initMap() {
     evcLayer.setMap(map);
     polyLineLayer.setMap(map);
     singleLayer.setMap(map);
-    doubleLayer.setMap(map);
+    doubleLayerLeft.setMap(map);
+    doubleLayerRight.setMap(map);
     kioskLayer.setMap(map);
 
     // create info-window for use when clicking parking asset
@@ -413,7 +464,29 @@ async function initMap() {
     });
 
     // make Double meters 'clickable' and popup and populate infowindow
-    doubleLayer.addListener('click', function (event) {
+    doubleLayerLeft.addListener('click', function (event) {
+      if (activeWindow != null) {
+        activeWindow.close()
+      }
+      let html = '<strong>' + name + '</strong>' +
+        '<br>' +
+        '<a href=' + navigationurl + '>Get Directions</a>' +
+        '<br><br>' +
+        description +
+        '<br /><br /> ('
+        + category + id + ')';
+      infowindow.setContent(html)
+
+      infowindow.setPosition(event.latLng);
+      infowindow.setOptions({
+        pixelOffset: new google.maps.Size(0, 0)
+      }); // move the infowindow up slightly to the top of the marker icon
+      infowindow.open(map);
+      { passive: true }
+      activeWindow = infowindow;
+    });
+
+    doubleLayerRight.addListener('click', function (event) {
       if (activeWindow != null) {
         activeWindow.close()
       }
