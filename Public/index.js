@@ -186,8 +186,7 @@ async function initMap() {
     let rate = item.rate
     let description = item.description
     let ownership = item.ownership
-    // let geometry = item.geometry
-    // let parkMarker = './images/arrowtransparent.png'
+
     let evIcon = './images/ev20.png'
 
     let blueSingle = './images/blueSingle.png'
@@ -211,7 +210,7 @@ async function initMap() {
       return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
     })
 
-    const singleIcon = {
+  const singleIcon = {
       "5801": blueSingle,
       "5802": brownSingle,
       "5803": smartSingle,
@@ -278,8 +277,8 @@ async function initMap() {
     });
     if (category === 'SGL') {
       singleLayer.setPosition(center)
-      console.log(singleIcon[zone1])
-      console.log(zone1)
+     // console.log(singleIcon[zone1])
+     // console.log(zone1)
     }
 
     //Adds double meter icons
