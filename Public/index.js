@@ -160,16 +160,9 @@ async function initMap() {
 
   let activeWindow = null
   console.log({ myInfo })
-  // myInfo.forEach((item) => {
-  //    console.log(item.category)
-  // })
-
-
-
-
-
+ 
   myInfo.forEach((item) => {
-
+console.log("now", map.zoom)
     let path = item.coordinates.split(',0,')
     let stroke = item.stroke
     let strokeOpacity = item.strokeopacity
@@ -187,7 +180,9 @@ async function initMap() {
     let description = item.description
     let ownership = item.ownership
 
-    let evIcon = './images/ev20.png'
+    let evIcon = './images/evCircle.png'
+    let handicapIcon = './images/handicapCircle.png'
+    let motorcycleIcon = './images/motoCircle.png'
 
     let blueSingle = './images/blueSingle.png'
     let brownSingle = "./images/brownSingle.png"
@@ -204,13 +199,13 @@ async function initMap() {
     let smartRight = "./images/smartRight.png"
     let yellowRight = "./images/yellowRight.png"
 
-    let kiosk = './images/kiosk.png'
+    let kiosk = './images/kioskCircle.png'
     let newPath = path.map((item) => {
       let coordPair = item.split(',')
       return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
     })
 
-  const singleIcon = {
+    const singleIcon = {
       "5801": blueSingle,
       "5802": brownSingle,
       "5803": smartSingle,
@@ -277,8 +272,8 @@ async function initMap() {
     });
     if (category === 'SGL') {
       singleLayer.setPosition(center)
-     // console.log(singleIcon[zone1])
-     // console.log(zone1)
+      // console.log(singleIcon[zone1])
+      // console.log(zone1)
     }
 
     //Adds double meter icons
@@ -333,10 +328,10 @@ async function initMap() {
     polygonLayer.setMap(map);
     evcLayer.setMap(map);
     polyLineLayer.setMap(map);
-    singleLayer.setMap(map);
-    doubleLayerLeft.setMap(map);
-    doubleLayerRight.setMap(map);
-    kioskLayer.setMap(map);
+    // singleLayer.setMap(map);
+   //  doubleLayerLeft.setMap(map);
+   //  doubleLayerRight.setMap(map);
+   // kioskLayer.setMap(map);
 
     // create info-window for use when clicking parking asset
     let infowindow = new google.maps.InfoWindow({
@@ -813,7 +808,7 @@ async function initMap() {
     // make small icons visible or not depending on zoom level
     map.addListener('zoom_changed', function () {
       let zoom = map.getZoom()
-      console.log('toggle on zoom fired -', zoom)
+     
       toggleHandicap()
       toggleMunicipalGarages()
       togglePrivateGarages()
@@ -826,9 +821,11 @@ async function initMap() {
       toggleBusLargeVehicle()
       toggleResidential()
       toggleLoadingUnloading()
+      
+      console.log('toggle on zoom fired -', zoom)
     })
   })
-  //  **************end of forEach Loop ***********************************************end of forEach Loop*****************
+  //  **************end of forEach Loop ***********************************************
 
   //turn off residential and loading/unloading to start
   function startCondition() {
