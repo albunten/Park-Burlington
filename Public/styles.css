@@ -284,7 +284,7 @@ button {
 /* Disclaimer modal */
 
 .disclaimer {
-   display: block;
+   display: none;
    position: fixed;
    /* Stay in place */
    z-index: 1;
