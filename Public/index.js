@@ -23,35 +23,35 @@ const config = {
   appId: "1:876903591987:web:e2f212a6db49f81263f346"
 };
 
-firebase.initializeApp(config)
-const database = firebase.database()
-const ref = database.ref()
+firebase.initializeApp(config);
+const database = firebase.database();
+const ref = database.ref();
 
 async function makeQuery() {
   let myVar = await ref.once('value')
     .then(function (dataSnapshot) {
-      let info = dataSnapshot.val()
-      let keys = Object.keys(info)
+      let info = dataSnapshot.val();
+      let keys = Object.keys(info);
 
       for (let i = 0; i < keys.length; i++) {
         let k = keys[i]
-      }
-      return dataSnapshot.val()
-    })
+      };
+      return dataSnapshot.val();
+    });
 
   return myVar
-}
+};
 
 //Error Handling Function-----
 function errData(data) {
   console.log('Error!')
   console.log(err)
-}
+};
 
 // Create Base Map *************************************************
 async function initMap() {
   //Define lat lng location of the center of downtown Burlington
-  const burlingtonCenter = { lat: 44.478081, lng: -73.215 }
+  const burlingtonCenter = { lat: 44.478081, lng: -73.215 };
   //Define a 1.5 mile (2414.02 meter) circle around downtown Burlington
   const circle = new google.maps.Circle(
     { center: burlingtonCenter, radius: 2414.02 });
@@ -61,7 +61,7 @@ async function initMap() {
     south: 41,
     west: -77.269027,
     east: -69.151240,
-  }
+  };
   // some controls disabled
   let map = new google.maps.Map(document.getElementById('map'), {
     center: burlingtonCenter,
@@ -139,8 +139,8 @@ async function initMap() {
 
   // Global variables **********************************************
   let circleCount = 1;
-  let myInfo = await makeQuery()
-  console.log({ myInfo })
+  let myInfo = await makeQuery();
+  console.log({ myInfo });
 
 
   // Global functions **********************************************
@@ -151,48 +151,47 @@ async function initMap() {
 
 
   myInfo.forEach((item) => {
-    let path = item.coordinates.split(',0,')
+    let path = item.coordinates.split(',0,');
     let newPath = path.map((item) => {
       let coordPair = item.split(',')
       return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
-    })
-    let stroke = item.stroke
-    let fill = item.fill
-    let fillOpacity = item.fillOpacity
+    });
+    let stroke = item.stroke;
+    let fill = item.fill;
+    let fillOpacity = item.fillOpacity;
 
-    let category = item.category
-    let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) }
-    let description = item.description
-    // let icon = item.icon
-    let id = item.id
-    let name = item.name
-    let navigationurl = item.navigationurl
-    let rate = item.rate
-    let ownership = item.ownership
-    let zone1 = item.zone1
-    let zone2 = item.zone2
+    let category = item.category;
+    let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) };
+    let description = item.description;
+    let id = item.id;
+    let name = item.name;
+    let navigationurl = item.navigationurl;
+    let rate = item.rate;
+    let ownership = item.ownership;
+    let zone1 = item.zone1;
+    let zone2 = item.zone2;
 
     //  Icons and icon lookup tables *********************
-    let evIcon = './images/evCircle.png'
-    let handicapIcon = './images/handicapCircle.png'
-    let motorcycleIcon = './images/motoCircle.png'
+    let evIcon = './images/evCircle.png';
+    let handicapIcon = './images/handicapCircle.png';
+    let motorcycleIcon = './images/motoCircle.png';
 
-    let blueSingle = './images/blueSingle.png'
-    let brownSingle = "./images/brownSingle.png"
-    let smartSingle = "./images/smartSingle.png"
-    let yellowSingle = "./images/yellowSingle.png"
+    let blueSingle = './images/blueSingle.png';
+    let brownSingle = "./images/brownSingle.png";
+    let smartSingle = "./images/smartSingle.png";
+    let yellowSingle = "./images/yellowSingle.png";
 
-    let blueLeft = './images/blueLeft.png'
-    let brownLeft = "./images/brownLeft.png"
-    let smartLeft = "./images/smartLeft.png"
-    let yellowLeft = "./images/yellowLeft.png"
+    let blueLeft = './images/blueLeft.png';
+    let brownLeft = "./images/brownLeft.png";
+    let smartLeft = "./images/smartLeft.png";
+    let yellowLeft = "./images/yellowLeft.png";
 
-    let blueRight = './images/blueRight.png'
-    let brownRight = "./images/brownRight.png"
-    let smartRight = "./images/smartRight.png"
-    let yellowRight = "./images/yellowRight.png"
+    let blueRight = './images/blueRight.png';
+    let brownRight = "./images/brownRight.png";
+    let smartRight = "./images/smartRight.png";
+    let yellowRight = "./images/yellowRight.png";
 
-    let kioskIcon = './images/kioskCircle.png'
+    let kioskIcon = './images/kioskCircle.png';
 
     const singleIcon = {
       "5801": blueSingle,
@@ -209,7 +208,7 @@ async function initMap() {
       "5813": yellowSingle,
       "5815": blueSingle,
       "5816": brownSingle
-    }
+    };
 
     const doubleIconLeft = {
       "5801": blueLeft,
@@ -226,7 +225,7 @@ async function initMap() {
       "5813": yellowLeft,
       "5815": blueLeft,
       "5816": brownLeft
-    }
+    };
 
     const doubleIconRight = {
       "5801": blueRight,
@@ -243,21 +242,143 @@ async function initMap() {
       "5813": yellowRight,
       "5815": blueRight,
       "5816": brownRight
-    }
+    };
 
-    let evcLayer = new google.maps.Marker({
+    //Adds single meter icons
+    let singleLayer = new google.maps.Marker({
       position: null,
-      icon: evIcon,
+      icon: singleIcon[zone1],
     });
-    if (category === 'EVC') {
-      evcLayer.setPosition(center)
-    }
+    if (category === 'SGL') {
+      singleLayer.setPosition(center)
+    };
 
-    evcLayer.setMap(map);
+    //Adds double meter icons
+    let doubleLayerLeft = new google.maps.Marker({
+      position: null,
+      icon: doubleIconLeft[zone1],
+    });
+    if (category === 'DBL') {
+      doubleLayerLeft.setPosition(center)
+    };
 
-  }) // END of For Each loop
+    let doubleLayerRight = new google.maps.Marker({
+      position: null,
+      icon: doubleIconRight[zone2],
+    });
+    if (category === 'DBL') {
+      doubleLayerRight.setPosition(center)
+    };
+
+    //Adds Kiosk icons
+    let kioskLayer = new google.maps.Marker({
+      position: null,
+      icon: kioskIcon,
+    });
+    if (category === 'KIO') {
+      kioskLayer.setPosition(center)
+    };
+
+    // Set layers on Map
+    singleLayer.setMap(map);
+    doubleLayerLeft.setMap(map);
+    doubleLayerRight.setMap(map);
+    kioskLayer.setMap(map)
 
 
+    // function to toggle specific types of parking asset on or off
+    function toggleLayer(theLayer, layerType) {
+      console.log('toggleLayer ', theLayer.checked)
+      if (theLayer.checked === false) {
+        layerType.setVisible(false)
+      } else if (theLayer.checked === true) {
+        layerType.setVisible(true)
+      }
+    };
+
+    // get Filter controls *************************************
+    let toggleEvcLayer = document.getElementById('toggleEVCharge');
+    let toggleHandicapLayer = document.getElementById('toggleHandicap');
+    let toggleSmartMetersLayer = document.getElementById('toggleSmartMeters');
+
+
+    // add listener to filter element and define click action ********
+    toggleEvcLayer.addEventListener('click', function () {
+      toggleEVCharge()
+    });
+    toggleHandicapLayer.addEventListener('click', function () {
+      toggleHandicap()
+    });
+    toggleSmartMetersLayer.addEventListener('click', function () {
+      toggleSmartLayer()
+    });
+
+
+
+    //Toggle specific types of parking asset plus small icons *****
+    function toggleHandicap() {
+      if (category === 'HAN') {
+        let theLayer = toggleHandicapLayer
+        let layerType = markerLayer
+        toggleLayer(theLayer, layerType)
+      }
+    };
+
+    function toggleEVCharge() {
+      if (category === 'EVC') {
+        let theLayer = toggleEvcLayer
+        let layerType = markerLayer
+        toggleLayer(theLayer, layerType)
+      }
+    };
+
+    function toggleSmartLayer() {
+      if (zone1 === 5803) {
+        let theLayer = toggleSmartMetersLayer
+        let layerType = markerLayer
+        toggleLayer(theLayer, layerType)
+      }
+    };
+
+  }); // END of For Each loop
+
+
+
+
+
+
+
+  //******* Modal window for Filters ************************************************************* */
+  // Get the modal
+  let modal = document.getElementById("filterListModal");
+
+  // Get the button that opens the modal
+  let btn = document.getElementById("toggleFilters");
+
+  // Get the <span> element that closes the modal
+  let span = document.getElementsByClassName("close")[1];
+
+  // When the user clicks on the button, open the modal
+  btn.onclick = function () {
+    modal.style.display = "block";
+    // setTimeout(closeModal, 1000)
+  };
+  // function closeModal() {
+  //   modal.style.display = "none"
+  // }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    };
+  };
+   
   // *********** search box ************************************************************
   //Initialize autocomplete function in the searchbar
   let autocomplete = new google.maps.places.Autocomplete(input);
@@ -283,7 +404,7 @@ async function initMap() {
     center: map.center,
     radius: 95,  //the average person can walk in a minute: 40-50 metres at a slow pace
     zIndex: -100
-  })
+  });
 
   autocomplete.addListener('place_changed', function () {
     // If the place has a geometry, then present it on a map plus add 3 minute walk circle.
@@ -307,18 +428,18 @@ async function initMap() {
     infowindowContent.children['place-name'].textContent = place.name;
     // set infowindow on map and close after 6 seconds
     // addressinfowindow.open(map, marker);
-    setTimeout(function () { addressinfowindow.close(); }, 7000)
+    setTimeout(function () { addressinfowindow.close(); }, 7000);
 
     if (circleCount <= 1) {
       addressinfowindow.open(map, marker);
       setTimeout(function () { addressinfowindow.close(); }, 7000)
       circleCount += 1;
-    }
+    };
     // add walk circle function
     function addWalkCircle() {
       walkCircle.center = place.geometry.location
       walkCircle.setMap(map)
-    }
+    };
 
     // reset search bar - pin - info window - walk circle
     function resetSearch() {
@@ -326,13 +447,13 @@ async function initMap() {
       marker.setVisible(false);
       walkCircle.setMap(null);
       map.setCenter({ lat: 44.478081, lng: -73.215 });
-      map.setZoom(15)
-      startCondition()
-    }
+      map.setZoom(15);
+      startCondition();
+    };
     document.getElementById("searchbar-container").addEventListener('click', function () {
       document.getElementById('searchbar-input').value = "";
       resetSearch()
-    })
+    });
   });
 }
 
