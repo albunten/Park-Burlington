@@ -1247,7 +1247,7 @@ window.onclick = function (event) {
   }
 }
 // *************************************************************************************
-// Disclaimer modal
+// Disclaimer modal *******************************************
 
 // Get the modal
 const disclaimerModal = document.getElementById("disclaimerModal");

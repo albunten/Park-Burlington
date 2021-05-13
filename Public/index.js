@@ -157,6 +157,7 @@ async function initMap() {
       return { lat: Number(coordPair[1]), lng: Number(coordPair[0]) }
     });
     let stroke = item.stroke;
+    let strokeOpacity = item.strokeopacity
     let fill = item.fill;
     let fillOpacity = item.fillOpacity;
 
@@ -191,7 +192,11 @@ async function initMap() {
     let smartRight = "./images/smartRight.png";
     let yellowRight = "./images/yellowRight.png";
 
-    let kioskIcon = './images/kioskCircle.png';
+    let kioskSmart = "./images/kioskSmart.png";
+    let kioskBlue = "./images/kioskBlue.png";
+    let kioskBrown = "./images/kioskBrown.png"
+
+
 
     const singleIcon = {
       "5801": blueSingle,
@@ -244,13 +249,33 @@ async function initMap() {
       "5816": brownRight
     };
 
-    //Adds single meter icons
-    let singleLayer = new google.maps.Marker({
-      position: null,
-      icon: singleIcon[zone1],
+    const kioskIcon = {
+      "5801": kioskBlue,
+      "5811": kioskSmart,
+      "5815": kioskBlue,
+      "5816": kioskBrown
+    }
+
+    // adds garages and lots 
+    let polygonLayer = new google.maps.Polygon({
+      paths: [],
+      strokeColor: stroke,
+      strokeWeight: 2,
+      fillColor: fill,
+      fillOpacity: fillOpacity,
     });
+    if (category === 'GAR' || category === 'LOT') {
+      polygonLayer.setPath(newPath)
+    }
+
+    // Create Marker Layer for icons
+    let markerLayer = new google.maps.Marker({
+    });
+
+    //Adds single meter icons
     if (category === 'SGL') {
-      singleLayer.setPosition(center)
+      markerLayer.setOptions({ icon: singleIcon[zone1] })
+      markerLayer.setPosition(center)
     };
 
     //Adds double meter icons
@@ -260,7 +285,7 @@ async function initMap() {
     });
     if (category === 'DBL') {
       doubleLayerLeft.setPosition(center)
-    };
+    }
 
     let doubleLayerRight = new google.maps.Marker({
       position: null,
@@ -268,22 +293,52 @@ async function initMap() {
     });
     if (category === 'DBL') {
       doubleLayerRight.setPosition(center)
-    };
+    }
+
 
     //Adds Kiosk icons
-    let kioskLayer = new google.maps.Marker({
-      position: null,
-      icon: kioskIcon,
-    });
     if (category === 'KIO') {
-      kioskLayer.setPosition(center)
+      markerLayer.setOptions({ icon: kioskIcon[zone1] })
+      markerLayer.setPosition(center)
+    };
+
+    //Adds handicap icons
+    if (category === 'HAN') {
+      markerLayer.setOptions({ icon: handicapIcon })
+      markerLayer.setPosition(center)
+    };
+
+    //Adds charging station icons
+    if (category === 'EVC') {
+      markerLayer.setOptions({ icon: evIcon })
+      markerLayer.setPosition(center)
+    };
+
+    //Adds motorcycle icons
+    if (category === 'MOT') {
+      markerLayer.setOptions({ icon: motorcycleIcon })
+      markerLayer.setPosition(center)
+    };
+
+    //  add any polyline loading/unloadig Bus&LrgVehicle
+    let polyLineLayer = new google.maps.Polyline({
+      strokeColor: stroke,
+      strokeWeight: 3.5,
+      strokeOpacity: strokeOpacity
+    })
+    if (category === 'LUZ' || category === 'LRG') {
+      polyLineLayer.setPath(newPath)
     };
 
     // Set layers on Map
-    singleLayer.setMap(map);
+    polygonLayer.setMap(map);
+    markerLayer.setMap(map)
+
     doubleLayerLeft.setMap(map);
     doubleLayerRight.setMap(map);
-    kioskLayer.setMap(map)
+
+    polyLineLayer.setMap(map);
+
 
 
     // function to toggle specific types of parking asset on or off
@@ -297,25 +352,132 @@ async function initMap() {
     };
 
     // get Filter controls *************************************
-    let toggleEvcLayer = document.getElementById('toggleEVCharge');
-    let toggleHandicapLayer = document.getElementById('toggleHandicap');
-    let toggleSmartMetersLayer = document.getElementById('toggleSmartMeters');
+
+    let toggleMunicipalGaragesLayer = document.getElementById('toggleMunicipalGarages')
+    let togglePrivateGaragesLayer = document.getElementById('togglePrivateGarages')
+    let toggleSmartMetersLayer = document.getElementById('toggleSmartMeters')
+    let toggleBlueTopMetersLayer = document.getElementById('toggleBlueTopMeters')
+    let toggleBrownTopMetersLayer = document.getElementById('toggleBrownTopMeters')
+    let toggleYellowTopMetersLayer = document.getElementById('toggleYellowTopMeters')
+    let toggleHandicapLayer = document.getElementById('toggleHandicap')
+    let toggleEVChargeLayer = document.getElementById('toggleEVCharge')
+    let toggleLoadingUnloadingLayer = document.getElementById('toggleLoadingUnloading')
+    let toggleMotorcycleLayer = document.getElementById('toggleMotorcycle')
+    let toggleBusLargeVehicleLayer = document.getElementById('toggleBusLargeVehicle')
 
 
-    // add listener to filter element and define click action ********
-    toggleEvcLayer.addEventListener('click', function () {
-      toggleEVCharge()
+    // add listener to filter element - define click action ********
+    toggleMunicipalGaragesLayer.addEventListener('click', function () {
+      toggleMunicipalGarages()
     });
-    toggleHandicapLayer.addEventListener('click', function () {
-      toggleHandicap()
+    togglePrivateGaragesLayer.addEventListener('click', function () {
+      togglePrivateGarages()
     });
     toggleSmartMetersLayer.addEventListener('click', function () {
       toggleSmartLayer()
+    });
+    toggleBlueTopMetersLayer.addEventListener('click', function () {
+      toggleBlueLayer()
+    });
+    toggleBrownTopMetersLayer.addEventListener('click', function () {
+      toggleBrownLayer()
+    });
+    toggleYellowTopMetersLayer.addEventListener('click', function () {
+      toggleYellowLayer()
+    });
+
+
+    toggleHandicapLayer.addEventListener('click', function () {
+      toggleHandicap()
+    });
+
+
+    toggleEVChargeLayer.addEventListener('click', function () {
+      toggleEVCharge()
+    });
+    toggleLoadingUnloadingLayer.addEventListener('click', function () {
+      toggleLoadingUnloading()
+    });
+
+
+    toggleMotorcycleLayer.addEventListener('click', function () {
+      toggleMotorcycle()
+    });
+    toggleBusLargeVehicleLayer.addEventListener('click', function () {
+      toggleBusLargeVehicle()
     });
 
 
 
     //Toggle specific types of parking asset plus small icons *****
+    function toggleMunicipalGarages() {
+      if (ownership === 'Municipal' && (category === 'GAR' || category === 'LOT')) {
+        let theLayer = toggleMunicipalGaragesLayer
+        let layerType = polygonLayer
+        toggleLayer(theLayer, layerType)
+      }
+    }
+
+    function togglePrivateGarages() {
+      if (ownership === 'Private' && (category === 'GAR' || category === 'LOT')) {
+        let theLayer = togglePrivateGaragesLayer
+        let layerType = polygonLayer
+        toggleLayer(theLayer, layerType)
+      }
+    }
+
+    function toggleSmartLayer() {
+      if (zone1 === 5803 || zone1 === 5811) {
+        toggleLayer(toggleSmartMetersLayer, markerLayer)
+        toggleLayer(toggleSmartMetersLayer, doubleLayerLeft)
+      
+      }
+      if (zone2 === 5803 || zone2 === 5811) {
+        toggleLayer(toggleSmartMetersLayer, markerLayer)
+      
+        toggleLayer(toggleSmartMetersLayer, doubleLayerRight)
+      }
+    }
+
+    function toggleBlueLayer() {
+      if (zone1 === 5801 || zone1 === 5807 || zone1 === 5808 || zone1 === 5810 || zone1 === 5815) {
+        toggleLayer(toggleBlueTopMetersLayer, markerLayer)
+        toggleLayer(toggleBlueTopMetersLayer, doubleLayerLeft)
+     
+      }
+      if (zone2 === 5801 || zone2 === 5807 || zone2 === 5808 || zone2 === 5810 || zone2 === 5815) {
+        toggleLayer(toggleBlueTopMetersLayer, markerLayer)
+       
+        toggleLayer(toggleBlueTopMetersLayer, doubleLayerRight)
+      }
+    }
+
+    function toggleBrownLayer() {
+      if (zone1 === 5802 || zone1 === 5806 || zone1 === 5809 || zone1 === 5812 || zone1 === 5816) {
+        toggleLayer(toggleBrownTopMetersLayer, markerLayer)
+        toggleLayer(toggleBrownTopMetersLayer, doubleLayerLeft)
+     
+      }
+      if (zone2 === 5802 || zone2 === 5806 || zone2 === 5809 || zone2 === 5812 || zone2 === 5816) {
+        toggleLayer(toggleBrownTopMetersLayer, markerLayer)
+       
+        toggleLayer(toggleBrownTopMetersLayer, doubleLayerRight)
+      }
+    }
+
+    function toggleYellowLayer() {
+      if (zone1 === 5804 || zone1 === 5813) {
+        toggleLayer(toggleYellowTopMetersLayer, markerLayer)
+        toggleLayer(toggleYellowTopMetersLayer, doubleLayerLeft)
+  
+      }
+      if (zone2 === 5804 || zone2 === 5813) {
+        toggleLayer(toggleYellowTopMetersLayer, markerLayer)
+       
+        toggleLayer(toggleYellowTopMetersLayer, doubleLayerRight)
+      }
+    }
+
     function toggleHandicap() {
       if (category === 'HAN') {
         let theLayer = toggleHandicapLayer
@@ -326,27 +488,37 @@ async function initMap() {
 
     function toggleEVCharge() {
       if (category === 'EVC') {
-        let theLayer = toggleEvcLayer
+        let theLayer = toggleEVChargeLayer
         let layerType = markerLayer
         toggleLayer(theLayer, layerType)
       }
     };
 
-    function toggleSmartLayer() {
-      if (zone1 === 5803) {
-        let theLayer = toggleSmartMetersLayer
+    function toggleLoadingUnloading() {
+      if (category === 'LUZ') {
+        let theLayer = toggleLoadingUnloadingLayer
+        let layerType = polyLineLayer
+        toggleLayer(theLayer, layerType)
+      }
+    }
+
+    function toggleMotorcycle() {
+      if (category === 'MOT') {
+        let theLayer = toggleMotorcycleLayer
         let layerType = markerLayer
         toggleLayer(theLayer, layerType)
       }
-    };
+    }
+    function toggleBusLargeVehicle() {
+      if (category === 'LRG') {
+        let theLayer = toggleBusLargeVehicleLayer
+        let layerType = polyLineLayer
+        toggleLayer(theLayer, layerType)
+      }
+    }
+
 
   }); // END of For Each loop
-
-
-
-
-
-
 
   //******* Modal window for Filters ************************************************************* */
   // Get the modal
@@ -378,7 +550,7 @@ async function initMap() {
       modal.style.display = "none";
     };
   };
-   
+
   // *********** search box ************************************************************
   //Initialize autocomplete function in the searchbar
   let autocomplete = new google.maps.places.Autocomplete(input);
@@ -455,5 +627,22 @@ async function initMap() {
       resetSearch()
     });
   });
+
+  // Disclaimer modal *******************************************
+
+  // Get the modal
+  const disclaimerModal = document.getElementById("disclaimerModal");
+
+  const toggleDisclaimer = document.getElementById('about-link')
+  toggleDisclaimer.onclick = function () {
+    disclaimerModal.style.display = "block";
+  }
+
+  // Get the <span> element that closes the modal
+  var disclaimerSpan = document.getElementsByClassName("disclaimer-accept")[0];
+  // When the user clicks on <span> (x), close the modal
+  disclaimerSpan.onclick = function () {
+    disclaimerModal.style.display = "none";
+  }
 }
 
