@@ -22,31 +22,9 @@ const config = {
   messagingSenderId: "876903591987",
   appId: "1:876903591987:web:e2f212a6db49f81263f346"
 };
-
 firebase.initializeApp(config);
 const database = firebase.database();
 const ref = database.ref();
-
-async function makeQuery() {
-  let myVar = await ref.once('value')
-    .then(function (dataSnapshot) {
-      let info = dataSnapshot.val();
-      let keys = Object.keys(info);
-
-      for (let i = 0; i < keys.length; i++) {
-        let k = keys[i]
-      };
-      return dataSnapshot.val();
-    });
-
-  return myVar
-};
-
-//Error Handling Function-----
-function errData(data) {
-  console.log('Error!')
-  console.log(err)
-};
 
 // Create Base Map *************************************************
 async function initMap() {
@@ -142,12 +120,31 @@ async function initMap() {
   let myInfo = await makeQuery();
   console.log({ myInfo });
 
-
   // Global functions **********************************************
+  // query database
+  async function makeQuery() {
+    let myVar = await ref.once('value')
+      .then(function (dataSnapshot) {
+        let info = dataSnapshot.val();
+        let keys = Object.keys(info);
+
+        for (let i = 0; i < keys.length; i++) {
+          let k = keys[i]
+        };
+        return dataSnapshot.val();
+      });
+
+    return myVar
+  };
+
+  //Error Handling Function-----
+  function errData(data) {
+    console.log('Error!')
+    console.log(err)
+  };
 
 
-
-  // get data from database ***********************************
+  // iterate over db data to set up map ***********************************
 
 
   myInfo.forEach((item) => {
@@ -256,6 +253,8 @@ async function initMap() {
       "5816": kioskBrown
     }
 
+    // create layers ***************************************************
+
     // adds garages and lots 
     let polygonLayer = new google.maps.Polygon({
       paths: [],
@@ -320,7 +319,7 @@ async function initMap() {
       markerLayer.setPosition(center)
     };
 
-    //  add any polyline loading/unloadig Bus&LrgVehicle
+    //  adds loading/unloading and Bus & Large Vehicle
     let polyLineLayer = new google.maps.Polyline({
       strokeColor: stroke,
       strokeWeight: 3.5,
@@ -341,16 +340,6 @@ async function initMap() {
 
 
 
-    // function to toggle specific types of parking asset on or off
-    function toggleLayer(theLayer, layerType) {
-      console.log('toggleLayer ', theLayer.checked)
-      if (theLayer.checked === false) {
-        layerType.setVisible(false)
-      } else if (theLayer.checked === true) {
-        layerType.setVisible(true)
-      }
-    };
-
     // get Filter controls *************************************
 
     let toggleMunicipalGaragesLayer = document.getElementById('toggleMunicipalGarages')
@@ -366,7 +355,7 @@ async function initMap() {
     let toggleBusLargeVehicleLayer = document.getElementById('toggleBusLargeVehicle')
 
 
-    // add listener to filter element - define click action ********
+    // add listener to filter elements - define click action ********
     toggleMunicipalGaragesLayer.addEventListener('click', function () {
       toggleMunicipalGarages()
     });
@@ -385,21 +374,15 @@ async function initMap() {
     toggleYellowTopMetersLayer.addEventListener('click', function () {
       toggleYellowLayer()
     });
-
-
     toggleHandicapLayer.addEventListener('click', function () {
       toggleHandicap()
     });
-
-
     toggleEVChargeLayer.addEventListener('click', function () {
       toggleEVCharge()
     });
     toggleLoadingUnloadingLayer.addEventListener('click', function () {
       toggleLoadingUnloading()
     });
-
-
     toggleMotorcycleLayer.addEventListener('click', function () {
       toggleMotorcycle()
     });
@@ -407,9 +390,16 @@ async function initMap() {
       toggleBusLargeVehicle()
     });
 
+    // function to toggle specific types of parking asset on or off
+    function toggleLayer(theLayer, layerType) {
+      if (theLayer.checked === false) {
+        layerType.setVisible(false)
+      } else if (theLayer.checked === true) {
+        layerType.setVisible(true)
+      }
+    };
 
-
-    //Toggle specific types of parking asset plus small icons *****
+    //Toggle specific types of parking asset from filter inputs *****
     function toggleMunicipalGarages() {
       if (ownership === 'Municipal' && (category === 'GAR' || category === 'LOT')) {
         let theLayer = toggleMunicipalGaragesLayer
@@ -430,11 +420,9 @@ async function initMap() {
       if (zone1 === 5803 || zone1 === 5811) {
         toggleLayer(toggleSmartMetersLayer, markerLayer)
         toggleLayer(toggleSmartMetersLayer, doubleLayerLeft)
-      
       }
       if (zone2 === 5803 || zone2 === 5811) {
         toggleLayer(toggleSmartMetersLayer, markerLayer)
-      
         toggleLayer(toggleSmartMetersLayer, doubleLayerRight)
       }
     }
@@ -443,11 +431,9 @@ async function initMap() {
       if (zone1 === 5801 || zone1 === 5807 || zone1 === 5808 || zone1 === 5810 || zone1 === 5815) {
         toggleLayer(toggleBlueTopMetersLayer, markerLayer)
         toggleLayer(toggleBlueTopMetersLayer, doubleLayerLeft)
-     
       }
       if (zone2 === 5801 || zone2 === 5807 || zone2 === 5808 || zone2 === 5810 || zone2 === 5815) {
         toggleLayer(toggleBlueTopMetersLayer, markerLayer)
-       
         toggleLayer(toggleBlueTopMetersLayer, doubleLayerRight)
       }
     }
@@ -456,11 +442,9 @@ async function initMap() {
       if (zone1 === 5802 || zone1 === 5806 || zone1 === 5809 || zone1 === 5812 || zone1 === 5816) {
         toggleLayer(toggleBrownTopMetersLayer, markerLayer)
         toggleLayer(toggleBrownTopMetersLayer, doubleLayerLeft)
-     
       }
       if (zone2 === 5802 || zone2 === 5806 || zone2 === 5809 || zone2 === 5812 || zone2 === 5816) {
         toggleLayer(toggleBrownTopMetersLayer, markerLayer)
-       
         toggleLayer(toggleBrownTopMetersLayer, doubleLayerRight)
       }
     }
@@ -469,11 +453,9 @@ async function initMap() {
       if (zone1 === 5804 || zone1 === 5813) {
         toggleLayer(toggleYellowTopMetersLayer, markerLayer)
         toggleLayer(toggleYellowTopMetersLayer, doubleLayerLeft)
-  
       }
       if (zone2 === 5804 || zone2 === 5813) {
         toggleLayer(toggleYellowTopMetersLayer, markerLayer)
-       
         toggleLayer(toggleYellowTopMetersLayer, doubleLayerRight)
       }
     }
@@ -519,7 +501,103 @@ async function initMap() {
 
 
   }); // END of For Each loop
+// fire start condition for initial map display 
+  // only lots and garages are 'on'
+  startCondition()
 
+  // Layer management by condition ********************************
+  // turn on only off street parking (reset map to startup condition)
+  let onOff = 'off'
+  toggleShowAll.addEventListener('click', function () {
+    console.log("toggling")
+    if (onOff === 'off') {
+      showAll()
+      onOff = 'On'
+    } else {
+      startCondition()
+      onOff = 'off'
+    }
+  });
+
+
+  // define start condition of layers on map - only lots and garages showing
+  function startCondition() {
+    if ((document.getElementById('toggleMunicipalGarages').checked) === false) {
+      document.getElementById('toggleMunicipalGarages').click();
+      console.log('it is true')
+    }
+    if ((document.getElementById('togglePrivateGarages').checked) === false) {
+      document.getElementById('togglePrivateGarages').click();
+    }
+    if ((document.getElementById('toggleSmartMeters').checked) === true) {
+      document.getElementById('toggleSmartMeters').click();
+    }
+    if ((document.getElementById('toggleBlueTopMeters').checked) === true) {
+      document.getElementById('toggleBlueTopMeters').click();
+    }
+    if ((document.getElementById('toggleBrownTopMeters').checked) === true) {
+      document.getElementById('toggleBrownTopMeters').click();
+    }
+    if ((document.getElementById('toggleYellowTopMeters').checked) === true) {
+      document.getElementById('toggleYellowTopMeters').click();
+    }
+    if ((document.getElementById('toggleHandicap').checked) === true) {
+      document.getElementById('toggleHandicap').click();
+    }
+    if ((document.getElementById('toggleEVCharge').checked) === true) {
+      document.getElementById('toggleEVCharge').click();
+    }
+    if ((document.getElementById('toggleLoadingUnloading').checked) === true) {
+      document.getElementById('toggleLoadingUnloading').click();
+    }
+    if ((document.getElementById('toggleMotorcycle').checked) === true) {
+      document.getElementById('toggleMotorcycle').click();
+    }
+    if ((document.getElementById('toggleBusLargeVehicle').checked) === true) {
+      document.getElementById('toggleBusLargeVehicle').click();
+    }
+  }
+
+  // turn all parking assets on - visible regardless of prior visibility
+  function showAll() {
+    console.log('show All fired')
+    if ((document.getElementById('toggleHandicap').checked) === false) {
+      document.getElementById('toggleHandicap').click();
+    }
+    if ((document.getElementById('toggleMunicipalGarages').checked) === false) {
+      document.getElementById('toggleMunicipalGarages').click();
+      console.log('it is true')
+    }
+    if ((document.getElementById('togglePrivateGarages').checked) === false) {
+      document.getElementById('togglePrivateGarages').click();
+    }
+    if ((document.getElementById('toggleSmartMeters').checked) === false) {
+      document.getElementById('toggleSmartMeters').click();
+    }
+    if ((document.getElementById('toggleBlueTopMeters').checked) === false) {
+      document.getElementById('toggleBlueTopMeters').click();
+    }
+    if ((document.getElementById('toggleBrownTopMeters').checked) === false) {
+      document.getElementById('toggleBrownTopMeters').click();
+    }
+    if ((document.getElementById('toggleYellowTopMeters').checked) === false) {
+      document.getElementById('toggleYellowTopMeters').click();
+    }
+    if ((document.getElementById('toggleEVCharge').checked) === false) {
+      document.getElementById('toggleEVCharge').click();
+    }
+    if ((document.getElementById('toggleMotorcycle').checked) === false) {
+      document.getElementById('toggleMotorcycle').click();
+    }
+    if ((document.getElementById('toggleBusLargeVehicle').checked) === false) {
+      document.getElementById('toggleBusLargeVehicle').click();
+    }
+    if ((document.getElementById('toggleLoadingUnloading').checked) === false) {
+      document.getElementById('toggleLoadingUnloading').click();
+    }
+  };
+
+  //
   //******* Modal window for Filters ************************************************************* */
   // Get the modal
   let modal = document.getElementById("filterListModal");
