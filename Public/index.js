@@ -49,7 +49,7 @@ async function initMap() {
     streetViewControl: true,
     rotateControl: false,
     scaleControl: true,
-    mapTypeControl: false,
+    mapTypeControl: true,
     restriction: {
       latLngBounds: viewLimit,
       strictBounds: false,
@@ -119,6 +119,7 @@ async function initMap() {
   let circleCount = 1;
   let myInfo = await makeQuery();
   console.log({ myInfo });
+  let activeWindow = null
 
   // Global functions **********************************************
   // query database
@@ -173,13 +174,15 @@ async function initMap() {
     let evIcon = './images/evCircle.png';
     let handicapIcon = './images/handicapCircle.png';
     let motorcycleIcon = './images/motoCircle.png';
+    let luzIcon = './images/luzIcon.png'
+    let busIcon = './images/busIcon.png'
 
     let blueSingle = './images/blueSingle.png';
     let brownSingle = "./images/brownSingle.png";
     let smartSingle = "./images/smartSingle.png";
     let yellowSingle = "./images/yellowSingle.png";
 
-    let blueLeft = './images/blueLeft.png';
+    let blueLeft = './images/blueLeftx.png';
     let brownLeft = "./images/brownLeft.png";
     let smartLeft = "./images/smartLeft.png";
     let yellowLeft = "./images/yellowLeft.png";
@@ -192,8 +195,6 @@ async function initMap() {
     let kioskSmart = "./images/kioskSmart.png";
     let kioskBlue = "./images/kioskBlue.png";
     let kioskBrown = "./images/kioskBrown.png"
-
-
 
     const singleIcon = {
       "5801": blueSingle,
@@ -273,27 +274,21 @@ async function initMap() {
 
     //Adds single meter icons
     if (category === 'SGL') {
-      markerLayer.setOptions({ icon: singleIcon[zone1] })
-      markerLayer.setPosition(center)
+      markerLayer.setOptions({ icon: singleIcon[zone1], position: center })
     };
 
     //Adds double meter icons
     let doubleLayerLeft = new google.maps.Marker({
-      position: null,
-      icon: doubleIconLeft[zone1],
     });
     if (category === 'DBL') {
-      doubleLayerLeft.setPosition(center)
+      doubleLayerLeft.setOptions({ icon: doubleIconLeft[zone1], position: center, anchorPoint: (0,0) })
     }
 
     let doubleLayerRight = new google.maps.Marker({
-      position: null,
-      icon: doubleIconRight[zone2],
-    });
+         });
     if (category === 'DBL') {
-      doubleLayerRight.setPosition(center)
+      doubleLayerRight.setOptions({ icon: doubleIconRight[zone2], position: center })
     }
-
 
     //Adds Kiosk icons
     if (category === 'KIO') {
@@ -319,25 +314,95 @@ async function initMap() {
       markerLayer.setPosition(center)
     };
 
-    //  adds loading/unloading and Bus & Large Vehicle
-    let polyLineLayer = new google.maps.Polyline({
-      strokeColor: stroke,
-      strokeWeight: 3.5,
-      strokeOpacity: strokeOpacity
-    })
-    if (category === 'LUZ' || category === 'LRG') {
-      polyLineLayer.setPath(newPath)
+    //Adds Loading/Unloading icons
+    if (category === 'LUZ') {
+      markerLayer.setOptions({ icon: luzIcon })
+      markerLayer.setPosition(center)
+    };
+
+    //Adds Bus/Large Vehicle icons
+    if (category === 'LRG') {
+      markerLayer.setOptions({ icon: busIcon })
+      markerLayer.setPosition(center)
     };
 
     // Set layers on Map
     polygonLayer.setMap(map);
     markerLayer.setMap(map)
-
     doubleLayerLeft.setMap(map);
     doubleLayerRight.setMap(map);
 
-    polyLineLayer.setMap(map);
+    // Info Window pop ups **********************************************
 
+    // create info-window for use when clicking parking asset
+    let infowindow = new google.maps.InfoWindow({
+      content: ""
+    });
+    // define infoWindow content
+    function setInfoWindow(name, url, zone, desc, cat, id, cntr) {
+      if (activeWindow != null) {
+        activeWindow.close()
+      }
+      let html =
+        '<strong>' + name + '</strong>' +
+        '<br>' +
+        '<a href=' + url + '>Get Directions</a>' +
+        '<br>' +
+        '<strong>' + 'ParkMobil Zone: ' + '</strong>' + zone +
+        '<br>' +
+        desc +
+        '<br /><br />('
+        + cat + id + ')';
+      infowindow.setPosition(cntr);
+      // define position and call open
+      infowindow.setContent(html)
+      infowindow.setOptions({
+        pixelOffset: new google.maps.Size(0, 0)
+      }); // move the infowindow up slightly to the top of the marker icon
+      infowindow.open(map);
+      { passive: true }
+      activeWindow = infowindow;
+    }
+    // create name lookup table
+    const truNameLookup = {
+      "5801": "Blue Top Meter",
+      "5802": "Brown Top Meter",
+      "5803": "Smart Meter",
+      "5804": "Yellow Top Meter",
+      "5806": "Brown Top Meter",
+      "5807": "Blue Top Meter",
+      "5808": "Blue Top Meter",
+      "5809": "Brown Top Meter",
+      "5810": "Blue Top Meter",
+      "5811": "Smart Meter",
+      "5812": "Brown Top Meter",
+      "5813": "Yellow Top Meter",
+      "5815": "Blue Top Meter",
+      "5816": "Brown Top Meter"
+    };
+
+    // add popUp listeners for each layer
+    polygonLayer.addListener('click', function (event) {
+      setInfoWindow(name, navigationurl, zone1, description, category, id, center)
+    });
+
+    markerLayer.addListener('click', function (event) {
+      let truName = name
+      if (name === 'SGL METER') { truName = truNameLookup[zone1] }
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center)
+    });
+
+    doubleLayerLeft.addListener('click', function (event) {
+      let truName = name
+      if (name === 'DBL METER') { truName = truNameLookup[zone1] }
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center)
+    });
+
+    doubleLayerRight.addListener('click', function (event) {
+      let truName = name
+      if (name === 'DBL METER') { truName = truNameLookup[zone2] }
+      setInfoWindow(truName, navigationurl, zone2, description, category, id, center)
+    });
 
 
     // get Filter controls *************************************
@@ -390,7 +455,7 @@ async function initMap() {
       toggleBusLargeVehicle()
     });
 
-    // function to toggle specific types of parking asset on or off
+    // function to toggle  parking asset on or off
     function toggleLayer(theLayer, layerType) {
       if (theLayer.checked === false) {
         layerType.setVisible(false)
@@ -479,7 +544,7 @@ async function initMap() {
     function toggleLoadingUnloading() {
       if (category === 'LUZ') {
         let theLayer = toggleLoadingUnloadingLayer
-        let layerType = polyLineLayer
+        let layerType = markerLayer
         toggleLayer(theLayer, layerType)
       }
     }
@@ -494,14 +559,16 @@ async function initMap() {
     function toggleBusLargeVehicle() {
       if (category === 'LRG') {
         let theLayer = toggleBusLargeVehicleLayer
-        let layerType = polyLineLayer
+        let layerType = markerLayer
         toggleLayer(theLayer, layerType)
       }
     }
 
 
   }); // END of For Each loop
-// fire start condition for initial map display 
+
+
+  // fire start condition for initial map display 
   // only lots and garages are 'on'
   startCondition()
 
@@ -509,7 +576,6 @@ async function initMap() {
   // turn on only off street parking (reset map to startup condition)
   let onOff = 'off'
   toggleShowAll.addEventListener('click', function () {
-    console.log("toggling")
     if (onOff === 'off') {
       showAll()
       onOff = 'On'
@@ -596,6 +662,8 @@ async function initMap() {
       document.getElementById('toggleLoadingUnloading').click();
     }
   };
+
+
 
   //
   //******* Modal window for Filters ************************************************************* */
