@@ -281,32 +281,35 @@ async function initMap() {
     };
 
 
-    
+
     //Adds double meter icons
+    //LEFT
+    // set clickable half of icon to left side
     const shapeLeft = {
       type: "rect",
       coords: [0, 0, 25, 12]
     }
+    // create layer for left side markers
     let doubleLayerLeft = new google.maps.Marker({
-    
     });
+    //select icon from table by zone and add attributes
     if (category === 'DBL') {
       doubleLayerLeft.setOptions({
         icon: doubleIconLeft[zone1],
         position: center,
         shape: shapeLeft
       })
-      
     }
-
+    // RIGHT
+    // set clickable half of icon to right side
     const shapeRight = {
       type: "rect",
       coords: [0, 12, 25, 25]
     }
-
+    // create layer for left side markers
     let doubleLayerRight = new google.maps.Marker({
-     
     });
+    //select icon from table by zone and add attributes
     if (category === 'DBL') {
       doubleLayerRight.setOptions({
         icon: doubleIconRight[zone2],
