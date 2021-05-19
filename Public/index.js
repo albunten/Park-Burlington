@@ -182,7 +182,7 @@ async function initMap() {
     let smartSingle = "./images/smartSingle.png";
     let yellowSingle = "./images/yellowSingle.png";
 
-    let blueLeft = './images/blueLeftx.png';
+    let blueLeft = './images/blueLeft.png';
     let brownLeft = "./images/brownLeft.png";
     let smartLeft = "./images/smartLeft.png";
     let yellowLeft = "./images/yellowLeft.png";
@@ -274,20 +274,45 @@ async function initMap() {
 
     //Adds single meter icons
     if (category === 'SGL') {
-      markerLayer.setOptions({ icon: singleIcon[zone1], position: center })
+      markerLayer.setOptions({
+        icon: singleIcon[zone1],
+        position: center
+      })
     };
 
+
+    
     //Adds double meter icons
+    const shapeLeft = {
+      type: "rect",
+      coords: [0, 0, 25, 12]
+    }
     let doubleLayerLeft = new google.maps.Marker({
+    
     });
     if (category === 'DBL') {
-      doubleLayerLeft.setOptions({ icon: doubleIconLeft[zone1], position: center, anchorPoint: (0,0) })
+      doubleLayerLeft.setOptions({
+        icon: doubleIconLeft[zone1],
+        position: center,
+        shape: shapeLeft
+      })
+      
+    }
+
+    const shapeRight = {
+      type: "rect",
+      coords: [0, 12, 25, 25]
     }
 
     let doubleLayerRight = new google.maps.Marker({
-         });
+     
+    });
     if (category === 'DBL') {
-      doubleLayerRight.setOptions({ icon: doubleIconRight[zone2], position: center })
+      doubleLayerRight.setOptions({
+        icon: doubleIconRight[zone2],
+        position: center,
+        shape: shapeRight
+      })
     }
 
     //Adds Kiosk icons
@@ -565,7 +590,8 @@ async function initMap() {
     }
 
 
-  }); // END of For Each loop
+  }); // END of For Each loop*************************************
+  //******************************************************************* */
 
 
   // fire start condition for initial map display 
