@@ -36,9 +36,9 @@
     <div id="footer-buttons-container">
 
       <!-- Trigger/Open Map Key -->
-      <label class="footer-button-label">
+      <!-- <label class="footer-button-label">
         <button id='toggle-key' class="footer-button">Map Key</button>
-      </label>
+      </label> -->
 
       <!-- Display All Map Information -->
       <label class="footer-button-label">
@@ -72,76 +72,10 @@
   </div>
 
 
-
-  <!-- Map Legend Window -->
-  <div id="map-legend">
-    <div id="legend-header">
-      <span id="legend-header-text">Key</span>
-      <span id="legend-close" class="close">&times;</span>
-    </div>
-    <div id="legend-content">
-      <div class="legend-item">
-        <span class="legend-item-name">Garages</span>
-        <div class="legend-item-polygon" id="garages-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Lots</span>
-        <div class="legend-item-polygon" id="lots-icon"></div>
-      </div>
-
-      <div class="legend-item">
-        <span class="legend-item-name">Smart Meters</span>
-        <div class="legend-item-line" id="smart-meters-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Blue Meters</span>
-        <div class="legend-item-line" id="blue-top-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Brown Meters</span>
-        <div class="legend-item-line" id="brown-top-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Yellow Meters</span>
-        <div class="legend-item-line" id="yellow-top-icon"></div>
-      </div>
-
-      <div class="legend-item">
-        <span class="legend-item-name">Handicap</span>
-        <div class="legend-item-icon" id="handicapped-icon"><img src="images/handicapCircle.png" height="30px"
-            width="30px" alt="handicapped-parking-icon">
-        </div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Motorcycle</span>
-        <div class="legend-item-icon" id="motorcycle-icon"><img src="images/motoCircle.png" height="30px" width="30px"
-            alt="handicapped-parking-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">EV Charge Stations</span>
-        <div class="legend-item-icon" id="EV-icon"><img src="images/evCircle.png" alt="electric-vehicle-icon"
-            height="30px" width="30px"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Bus/Large Vehicle</span>
-        <div class="legend-item-line" id="bus-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Loading Zone</span>
-        <div class="legend-item-line" id="loading-icon"></div>
-      </div>
-      <div class="legend-item">
-        <span class="legend-item-name">Residential Permit</span>
-        <div class="legend-item-line" id="residential-icon"></div>
-      </div>
-
-    </div>
-  </div>
-
   <!-- Filter List Window -->
   <div id="filterListModal" class="modal">
     <div class="modal-content">
-      <span class="close">&times;</span>
+      <span id="filtersClose" class="close">&times;</span>
       <div class='menu'>
 
         <label class="switch" id='slideMg'>

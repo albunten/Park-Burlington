@@ -49,7 +49,7 @@ async function initMap() {
     streetViewControl: true,
     rotateControl: false,
     scaleControl: true,
-    mapTypeControl: true,
+    mapTypeControl: false,
     restriction: {
       latLngBounds: viewLimit,
       strictBounds: false,
@@ -120,7 +120,10 @@ async function initMap() {
   let myInfo = await makeQuery();
   console.log({ myInfo });
   let activeWindow = null
-
+  const iconSize = 13 //write function to reference zoom level and adjust
+  const walkCircleZoom = 18
+  
+ 
   // Global functions **********************************************
   // query database
   async function makeQuery() {
@@ -138,6 +141,11 @@ async function initMap() {
     return myVar
   };
 
+  google.maps.event.addListener(map, 'zoom_changed', function () {
+    var zoom = map.getZoom();
+    console.log(zoom);
+  });
+
   //Error Handling Function-----
   function errData(data) {
     console.log('Error!')
@@ -149,6 +157,9 @@ async function initMap() {
 
 
   myInfo.forEach((item) => {
+
+
+  
     let path = item.coordinates.split(',0,');
     let newPath = path.map((item) => {
       let coordPair = item.split(',')
@@ -171,30 +182,90 @@ async function initMap() {
     let zone2 = item.zone2;
 
     //  Icons and icon lookup tables *********************
-    let evIcon = './images/evCircle.png';
-    let handicapIcon = './images/handicapCircle.png';
-    let motorcycleIcon = './images/motoCircle.png';
-    let luzIcon = './images/luzIcon.png'
-    let busIcon = './images/busIcon.png'
+    let evIcon = {
+      url: './images/evCircle.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let handicapIcon = {
+      url: './images/handicapCircle.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let motorcycleIcon = {
+      url: './images/motoCircle.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let luzIcon = {
+      url: './images/luzIcon.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let busIcon = {
+      url: './images/busIcon.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
 
-    let blueSingle = './images/blueSingle.png';
-    let brownSingle = "./images/brownSingle.png";
-    let smartSingle = "./images/smartSingle.png";
-    let yellowSingle = "./images/yellowSingle.png";
+    let blueSingle = {
+      url: './images/blueSingle.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let brownSingle = {
+      url:  "./images/brownSingle.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let smartSingle = {
+      url:  "./images/smartSingle.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let yellowSingle = {
+      url:  "./images/yellowSingle.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
 
-    let blueLeft = './images/blueLeft.png';
-    let brownLeft = "./images/brownLeft.png";
-    let smartLeft = "./images/smartLeft.png";
-    let yellowLeft = "./images/yellowLeft.png";
+    let blueLeft = {
+      url: './images/blueLeft.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let brownLeft = {
+      url:  "./images/brownLeft.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let smartLeft = {
+      url:  "./images/smartLeft.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let yellowLeft = {
+      url:  "./images/yellowLeft.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
 
-    let blueRight = './images/blueRight.png';
-    let brownRight = "./images/brownRight.png";
-    let smartRight = "./images/smartRight.png";
-    let yellowRight = "./images/yellowRight.png";
+    let blueRight = {
+      url: './images/blueRight.png',
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let brownRight = {
+      url:  "./images/brownRight.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let smartRight = {
+      url:  "./images/smartRight.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let yellowRight = {
+      url:  "./images/yellowRight.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
 
-    let kioskSmart = "./images/kioskSmart.png";
-    let kioskBlue = "./images/kioskBlue.png";
-    let kioskBrown = "./images/kioskBrown.png"
+    let kioskSmart = {
+      url:  "./images/kioskSmart.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let kioskBlue = {
+      url:  "./images/kioskBlue.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
+    let kioskBrown = {
+      url:  "./images/kioskBrown.png",
+      scaledSize: new google.maps.Size(iconSize, iconSize),
+    };
 
     const singleIcon = {
       "5801": blueSingle,
@@ -287,7 +358,7 @@ async function initMap() {
     // set clickable half of icon to left side
     const shapeLeft = {
       type: "rect",
-      coords: [0, 0, 25, 12]
+      coords: [0, 0, iconSize, (iconSize/2)]
     }
     // create layer for left side markers
     let doubleLayerLeft = new google.maps.Marker({
@@ -304,7 +375,7 @@ async function initMap() {
     // set clickable half of icon to right side
     const shapeRight = {
       type: "rect",
-      coords: [0, 12, 25, 25]
+      coords: [0, (iconSize/2), iconSize, iconSize]
     }
     // create layer for left side markers
     let doubleLayerRight = new google.maps.Marker({
@@ -602,6 +673,7 @@ async function initMap() {
   startCondition()
 
   // Layer management by condition ********************************
+
   // turn on only off street parking (reset map to startup condition)
   let onOff = 'off'
   toggleShowAll.addEventListener('click', function () {
@@ -613,6 +685,12 @@ async function initMap() {
       onOff = 'off'
     }
   });
+
+  function toggleZoomFeaturesOn() {
+    if (map.zoom >= 17) {
+      showAll()
+    }
+  }
 
 
   // define start condition of layers on map - only lots and garages showing
@@ -703,7 +781,7 @@ async function initMap() {
   let btn = document.getElementById("toggleFilters");
 
   // Get the <span> element that closes the modal
-  let span = document.getElementsByClassName("close")[1];
+  let cxl = document.getElementById("filtersClose");
 
   // When the user clicks on the button, open the modal
   btn.onclick = function () {
@@ -715,7 +793,7 @@ async function initMap() {
   // }
 
   // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
+  cxl.onclick = function () {
     modal.style.display = "none";
   };
 
@@ -759,16 +837,16 @@ async function initMap() {
 
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
-      map.setZoom(17.2);  //about 1 block
-      // toggleZoomFeaturesOn()
+      map.setZoom(walkCircleZoom);  //about 1 block
+      toggleZoomFeaturesOn()
       addWalkCircle()
       // console.log(circleCount)
     } else {
       map.setCenter(place.geometry.location);
-      map.setZoom(17.2);  // Why 17? Because it looks good.
+      map.setZoom(walkCircleZoom);  // Why 17? Because it looks good.
     }
     //set marker on map from search bar
-    map.setZoom(17.2);  //about 1 block
+    map.setZoom(walkCircleZoom);  //about 1 block
     marker.setPosition(place.geometry.location);
     marker.setVisible(true);
     // add place name to infowindow
