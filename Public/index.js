@@ -29,7 +29,7 @@ const ref = database.ref();
 // Create Base Map *************************************************
 async function initMap() {
   //Define lat lng location of the center of downtown Burlington
-  const burlingtonCenter = { lat: 44.478081, lng: -73.215 };
+  const burlingtonCenter = { lat: 44.478081, lng: -73.217 };
   //Define a 1.5 mile (2414.02 meter) circle around downtown Burlington
   const circle = new google.maps.Circle(
     { center: burlingtonCenter, radius: 2414.02 });
@@ -120,10 +120,11 @@ async function initMap() {
   let myInfo = await makeQuery();
   console.log({ myInfo });
   let activeWindow = null
-  const iconSize = 13 //write function to reference zoom level and adjust
-  const walkCircleZoom = 18
-  
- 
+  const iconSize = 25
+  const walkCircleZoom = 17
+  const walkCircleRadius = 125
+
+
   // Global functions **********************************************
   // query database
   async function makeQuery() {
@@ -159,7 +160,7 @@ async function initMap() {
   myInfo.forEach((item) => {
 
 
-  
+
     let path = item.coordinates.split(',0,');
     let newPath = path.map((item) => {
       let coordPair = item.split(',')
@@ -174,9 +175,12 @@ async function initMap() {
     let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) };
     let description = item.description;
     let id = item.id;
+    let enforced = item.enforcedhours
+    let maxTime = item.maxtime
     let name = item.name;
     let navigationurl = item.navigationurl;
     let rate = item.rate;
+    let paymenttype = item.paymenttype
     let ownership = item.ownership;
     let zone1 = item.zone1;
     let zone2 = item.zone2;
@@ -208,15 +212,15 @@ async function initMap() {
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let brownSingle = {
-      url:  "./images/brownSingle.png",
+      url: "./images/brownSingle.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let smartSingle = {
-      url:  "./images/smartSingle.png",
+      url: "./images/smartSingle.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let yellowSingle = {
-      url:  "./images/yellowSingle.png",
+      url: "./images/yellowSingle.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
 
@@ -225,15 +229,15 @@ async function initMap() {
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let brownLeft = {
-      url:  "./images/brownLeft.png",
+      url: "./images/brownLeft.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let smartLeft = {
-      url:  "./images/smartLeft.png",
+      url: "./images/smartLeft.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let yellowLeft = {
-      url:  "./images/yellowLeft.png",
+      url: "./images/yellowLeft.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
 
@@ -242,28 +246,28 @@ async function initMap() {
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let brownRight = {
-      url:  "./images/brownRight.png",
+      url: "./images/brownRight.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let smartRight = {
-      url:  "./images/smartRight.png",
+      url: "./images/smartRight.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let yellowRight = {
-      url:  "./images/yellowRight.png",
+      url: "./images/yellowRight.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
 
     let kioskSmart = {
-      url:  "./images/kioskSmart.png",
+      url: "./images/kioskSmart.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let kioskBlue = {
-      url:  "./images/kioskBlue.png",
+      url: "./images/kioskBlue.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
     let kioskBrown = {
-      url:  "./images/kioskBrown.png",
+      url: "./images/kioskBrown.png",
       scaledSize: new google.maps.Size(iconSize, iconSize),
     };
 
@@ -358,7 +362,7 @@ async function initMap() {
     // set clickable half of icon to left side
     const shapeLeft = {
       type: "rect",
-      coords: [0, 0, iconSize, (iconSize/2)]
+      coords: [0, 0, (iconSize/2), iconSize]
     }
     // create layer for left side markers
     let doubleLayerLeft = new google.maps.Marker({
@@ -375,7 +379,7 @@ async function initMap() {
     // set clickable half of icon to right side
     const shapeRight = {
       type: "rect",
-      coords: [0, (iconSize/2), iconSize, iconSize]
+      coords: [(iconSize / 2), 0, iconSize, iconSize]
     }
     // create layer for left side markers
     let doubleLayerRight = new google.maps.Marker({
@@ -438,20 +442,44 @@ async function initMap() {
       content: ""
     });
     // define infoWindow content
-    function setInfoWindow(name, url, zone, desc, cat, id, cntr) {
+    function setInfoWindow(name, url, zone, desc, cat, id, cntr, rate, pay) {
       if (activeWindow != null) {
         activeWindow.close()
       }
-      let html =
-        '<strong>' + name + '</strong>' +
-        '<br>' +
-        '<a href=' + url + '>Get Directions</a>' +
-        '<br>' +
+
+      let html = ""
+
+      if (desc) {
+        html =
+          '<strong>' + name + '</strong>' +
+          '<br />' +
+          '<a href=' + url + '>Get Directions</a>' +
+          '<br />' +
+          '<br />' +
+          desc +
+          '<br /><br />('
+          + cat + id + ')';
+      } else {
+        html =
+          '<strong>' + name + '</strong>' +
+          '<br />' +
+          '<a href=' + url + '>Get Directions</a>' +
+          '<br />' +
+        '<br />' +
+        '<strong>' + 'Rate: ' + '</strong>' + rate +
+        '<br />' +
+        '<strong>' + 'Payment: ' + '</strong>' + pay +
+        '<br />' +
         '<strong>' + 'ParkMobil Zone: ' + '</strong>' + zone +
-        '<br>' +
-        desc +
-        '<br /><br />('
-        + cat + id + ')';
+        '<br />' +
+        '<br />' +
+        '<strong>' + 'Enforced: ' + '</strong>' + enforced +
+        '<br />' +
+        '<strong>' + 'Max time: ' + '</strong>' + maxTime +
+        '<br />' +
+        '<br />(' + cat + id + ')';
+      }
+
       infowindow.setPosition(cntr);
       // define position and call open
       infowindow.setContent(html)
@@ -464,43 +492,43 @@ async function initMap() {
     }
     // create name lookup table
     const truNameLookup = {
-      "5801": "Blue Top Meter",
-      "5802": "Brown Top Meter",
-      "5803": "Smart Meter",
-      "5804": "Yellow Top Meter",
-      "5806": "Brown Top Meter",
-      "5807": "Blue Top Meter",
-      "5808": "Blue Top Meter",
-      "5809": "Brown Top Meter",
-      "5810": "Blue Top Meter",
-      "5811": "Smart Meter",
-      "5812": "Brown Top Meter",
-      "5813": "Yellow Top Meter",
-      "5815": "Blue Top Meter",
-      "5816": "Brown Top Meter"
+      "5801": "BLUE TOP METER",
+      "5802": "BROWN TOP METER",
+      "5803": "SMART METER",
+      "5804": "YELLOW TOP METER",
+      "5806": "BROWN TOP METER",
+      "5807": "BLUE TOP METER",
+      "5808": "BLUE TOP METER",
+      "5809": "BROWN TOP METER",
+      "5810": "BLUE TOP METER",
+      "5811": "SMART METER",
+      "5812": "BROWN TOP METER",
+      "5813": "YELLOW TOP METER",
+      "5815": "BLUE TOP METER",
+      "5816": "BROWN TOP METER"
     };
 
     // add popUp listeners for each layer
     polygonLayer.addListener('click', function (event) {
-      setInfoWindow(name, navigationurl, zone1, description, category, id, center)
+      setInfoWindow(name, navigationurl, zone1, description, category, id, center, rate, paymenttype)
     });
 
     markerLayer.addListener('click', function (event) {
       let truName = name
-      if (name === 'SGL METER') { truName = truNameLookup[zone1] }
-      setInfoWindow(truName, navigationurl, zone1, description, category, id, center)
+      if (category === 'SGL') { truName = truNameLookup[zone1] }
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype)
     });
 
     doubleLayerLeft.addListener('click', function (event) {
       let truName = name
-      if (name === 'DBL METER') { truName = truNameLookup[zone1] }
-      setInfoWindow(truName, navigationurl, zone1, description, category, id, center)
+      if (category === 'DBL') { truName = truNameLookup[zone1] }
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype)
     });
 
     doubleLayerRight.addListener('click', function (event) {
       let truName = name
-      if (name === 'DBL METER') { truName = truNameLookup[zone2] }
-      setInfoWindow(truName, navigationurl, zone2, description, category, id, center)
+      if (category === 'DBL') { truName = truNameLookup[zone2] }
+      setInfoWindow(truName, navigationurl, zone2, description, category, id, center, rate, paymenttype)
     });
 
 
@@ -827,7 +855,7 @@ async function initMap() {
     strokeWeight: 3,
     fillOpacity: 0.0,
     center: map.center,
-    radius: 95,  //the average person can walk in a minute: 40-50 metres at a slow pace
+    radius: walkCircleRadius,  //the average person can walk in a minute: 40-50 metres at a slow pace
     zIndex: -100
   });
 
