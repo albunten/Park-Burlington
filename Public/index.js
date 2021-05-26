@@ -120,7 +120,7 @@ async function initMap() {
   let myInfo = await makeQuery();
   console.log({ myInfo });
   let activeWindow = null
-  const iconSize = 25
+  const iconSize = 20
   const walkCircleZoom = 17
   const walkCircleRadius = 125
 
