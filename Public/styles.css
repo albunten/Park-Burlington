@@ -137,7 +137,7 @@ button {
    width: 90vw;
      height: calc(var(--vh, 1vh) * 12);
    display: flex;
-   justify-content: space-between;
+   justify-content: space-around;
    align-items: center;
 }
 
