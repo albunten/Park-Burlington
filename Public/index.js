@@ -173,13 +173,16 @@ async function initMap() {
 
     let category = item.category;
     let center = { lat: Number(item.center__lat), lng: Number(item.center__lng) };
+    let contact = item.contact;
     let description = item.description;
     let id = item.id;
-    let enforced = item.enforcedhours
-    let maxTime = item.maxtime
+    let enforced = item.enforcedhours;
+    let maxtime = item.maxtime;
+    let maxtime2 = item.maxtime2;
     let name = item.name;
     let navigationurl = item.navigationurl;
     let rate = item.rate;
+    let rate2 = item.rate2;
     let paymenttype = item.paymenttype
     let ownership = item.ownership;
     let zone1 = item.zone1;
@@ -442,7 +445,7 @@ async function initMap() {
       content: ""
     });
     // define infoWindow content
-    function setInfoWindow(name, url, zone, desc, cat, id, cntr, rate, pay) {
+    function setInfoWindow(name, url, zone, desc, cat, id, cntr, rate, pay, contact, owner, maxtime) {
       if (activeWindow != null) {
         activeWindow.close()
       }
@@ -453,17 +456,21 @@ async function initMap() {
         html =
           '<strong>' + name + '</strong>' +
           '<br />' +
-          '<a href=' + url + '>Get Directions</a>' +
+          '<a target="_blank" href=' + url + '>Get Directions</a>' +
           '<br />' +
           '<br />' +
           desc +
-          '<br /><br />('
-          + cat + id + ')';
+          '<br /><br />' +
+        '<strong>' + 'Owner: ' + '</strong>' + owner +
+          '<br />' +
+          '<strong>' + 'Contact: ' + '</strong>' + contact +
+          '<br />' +
+          '<br />(' + cat + id + ')';
       } else {
         html =
           '<strong>' + name + '</strong>' +
           '<br />' +
-          '<a href=' + url + '>Get Directions</a>' +
+          '<a target="_blank" href=' + url + '>Get Directions</a>' +
           '<br />' +
           '<br />' +
           '<strong>' + 'Rate: ' + '</strong>' + rate +
@@ -475,7 +482,11 @@ async function initMap() {
           '<br />' +
           '<strong>' + 'Enforced: ' + '</strong>' + enforced +
           '<br />' +
-          '<strong>' + 'Max time: ' + '</strong>' + maxTime +
+          '<strong>' + 'Max time: ' + '</strong>' + maxtime +
+          '<br /><br />' +
+          '<strong>' + 'Owner: ' + '</strong>' + owner +
+          '<br />' +
+          '<strong>' + 'Contact: ' + '</strong>' + contact +
           '<br />' +
           '<br />(' + cat + id + ')';
       }
@@ -510,25 +521,25 @@ async function initMap() {
 
     // add popUp listeners for each layer
     polygonLayer.addListener('click', function (event) {
-      setInfoWindow(name, navigationurl, zone1, description, category, id, center, rate, paymenttype)
+      setInfoWindow(name, navigationurl, zone1, description, category, id, center, rate, paymenttype, contact, ownership)
     });
 
     markerLayer.addListener('click', function (event) {
       let truName = name
       if (category === 'SGL') { truName = truNameLookup[zone1] }
-      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype)
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype, contact, ownership)
     });
 
     doubleLayerLeft.addListener('click', function (event) {
       let truName = name
       if (category === 'DBL') { truName = truNameLookup[zone1] }
-      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype)
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype, contact, ownership, maxtime)
     });
 
     doubleLayerRight.addListener('click', function (event) {
       let truName = name
       if (category === 'DBL') { truName = truNameLookup[zone2] }
-      setInfoWindow(truName, navigationurl, zone2, description, category, id, center, rate, paymenttype)
+      setInfoWindow(truName, navigationurl, zone2, description, category, id, center, rate2, paymenttype, contact, ownership, maxtime2)
     });
 
 
