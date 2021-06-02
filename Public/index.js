@@ -605,7 +605,7 @@ async function initMap() {
 
     //Toggle specific types of parking asset from filter inputs *****
     function toggleMunicipalGarages() {
-      if (ownership === 'Municipal' && (category === 'GAR' || category === 'LOT')) {
+      if (ownership === 'City of Burlington' && (category === 'GAR' || category === 'LOT')) {
         let theLayer = toggleMunicipalGaragesLayer
         let layerType = polygonLayer
         toggleLayer(theLayer, layerType)
@@ -613,7 +613,7 @@ async function initMap() {
     }
 
     function togglePrivateGarages() {
-      if (ownership === 'Private' && (category === 'GAR' || category === 'LOT')) {
+      if (ownership !== 'City of Burlington' && (category === 'GAR' || category === 'LOT')) {
         let theLayer = togglePrivateGaragesLayer
         let layerType = polygonLayer
         toggleLayer(theLayer, layerType)
