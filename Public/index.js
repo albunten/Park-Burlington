@@ -527,7 +527,7 @@ async function initMap() {
     markerLayer.addListener('click', function (event) {
       let truName = name
       if (category === 'SGL') { truName = truNameLookup[zone1] }
-      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype, contact, ownership)
+      setInfoWindow(truName, navigationurl, zone1, description, category, id, center, rate, paymenttype, contact, ownership, maxtime)
     });
 
     doubleLayerLeft.addListener('click', function (event) {
