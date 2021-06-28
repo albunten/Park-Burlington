@@ -443,7 +443,8 @@ async function initMap() {
 
     // create info-window for use when clicking parking asset
     let infowindow = new google.maps.InfoWindow({
-      content: ""
+      content: "",
+      maxWidth: 300
     });
     // define infoWindow content
     function setInfoWindow(name, url, zone, desc, cat, id, cntr, rate, pay, contact, owner, maxtime) {
