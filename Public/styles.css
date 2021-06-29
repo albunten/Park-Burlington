@@ -481,163 +481,21 @@ input:checked+.slider:before {
 .slider.round:before {
    border-radius: 50%;
 }
+/* Filter modal content */
 
-/* Map Legend */
+.garLotBox {
 
-#map-legend {
-   display: none;
-   border-radius: 5px;
-   padding: 0;
-   position: absolute;
-   bottom: 16vh;
-   bottom: calc(var(--vh, 1vh) * 16);
-   left: 1vw;
-   width: 20vw;
-   min-width: 150px;
-   max-width: 200px;
-   max-height: 50vh;
-   overflow-y: auto;
-   margin: 0;
-   transition-property: all;
-   transition-duration: .6s;
-   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-   -webkit-animation-name: animateleft;
-   -webkit-animation-duration: 0.2s;
-   animation-name: animateleft;
-   animation-duration: .2s;
-   /* border: solid 3px #20346a; */
+ 
 }
 
-#map-legend::-webkit-scrollbar {
-   width: .5em;
+.garLotIcon {
+  padding-right: .3em;
 }
 
-#map-legend::-webkit-scrollbar-track {
-   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-#map-legend::-webkit-scrollbar-thumb {
-   width: 1em;
-   background-color: darkgrey;
-   outline: 1px solid slategrey;
-}
-
-#legend-header {
-   position: fixed;
-   width: 20vw;
-   min-width: 150px;
-   max-width: 200px;
-   color: white;
-   background-color: #20346a;
-   margin: 0;
-   padding: 0;
-   border-radius: 5px 5px 0 0;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   transition-property: all;
-   transition-duration: .2s;
-   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-#legend-header-text {
-   padding: 0 0 0 40%;
-   font-size: .9rem;
-}
-
-#legend-close {
-   justify-self: right;
-   margin-right: 5%;
-   padding: 0 5px;
-   cursor: pointer;
-}
-
-#legend-content {
-   background-color: rgba(255, 255, 255, 1);
-   padding-top: 35px;
-   margin: 0;
-   border-radius: 5px;
-}
-
-.legend-item {
-   display: grid;
-   grid-template-columns: 1fr 25px;
-   padding: 4px;
-   align-items: center;
-   border-radius: 5px;
-}
-
-.legend-item-name {
-   color: black;
-   display: flex;
-   align-items: center;
-   font-size: 12px;
-}
-
-.legend-item-polygon {
-   width: 15px;
-   height: 15px;
-   padding-right: 10%;
-}
-
-.legend-item-line {
-   width: 20px;
-   height: 4px;
-   padding-right: 10%;
-}
-
-#garages-icon {
-   background-color: #7cb34273;
-   border: 2px solid #7cb342;
-}
-
-#lots-icon {
-   background-color: #01589b6b;
-   border: 2px solid #01579b;
-}
-
-#smart-meters-icon {
-   background-color: #9c27b0;
-}
-
-#blue-top-icon {
-   background-color: #0288d1;
-}
-
-#brown-top-icon {
-   background-color: #795548;
-}
-
-#yellow-top-icon {
-   background-color: #ffeda0;
-}
-
-#residential-icon {
-   background-color: #ffaa00;
-}
-
-/* #motorcycle-icon {
-   background-color: #828282;
- } */
-
-#loading-icon {
-   background-color: #ac2c1b;
-}
-
-#bus-icon {
-   background-color: #afb42b;
-}
 
 /* Fade Animations */
 
-/* .hidden {
-   display: none;
- }
- 
- .visuallyhidden {
-   opacity: 0;
- } */
+
 
 img[src="images/text-background.png"] {
    animation: fadeIn ease .5s;
